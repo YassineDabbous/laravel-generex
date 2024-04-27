@@ -6,8 +6,8 @@ namespace {{ $o->packageNamespace }}\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
-use {{ $o->packageNamespace }}\Models\{{ $o->modelName }};
-use {{ $o->packageNamespace }}\Http\Requests\{{ $o->modelName }}Request;
+use {{ $o->packageNamespace }}\Models\{{ $o->modelClassName }};
+use {{ $o->packageNamespace }}\Http\Requests\{{ $o->requestClassName }};
 use {{ $o->packageNamespace }}\Concerns\Has{{ $o->modelName }}QueryBuilder;
 
 
@@ -20,9 +20,9 @@ class {{ $o->modelName }}ApiController
      */
     public function index(Request $request)
     {
-        Gate::authorize('index', {{ $o->modelName }}::class);
+        Gate::authorize('index', {{ $o->modelClassName }}::class);
 
-        $filter = $this->filter({{ $o->modelName }}::query(), $request);
+        $filter = $this->filter({{ $o->modelClassName }}::query(), $request);
 
         $results = $filter->paginate();
 
@@ -33,11 +33,11 @@ class {{ $o->modelName }}ApiController
     /**
      * Store a newly created resource in storage.
      */
-    public function store({{ $o->modelName }}Request $request)
+    public function store({{ $o->requestClassName }} $request)
     {
-        Gate::authorize('create', {{ $o->modelName }}::class);
+        Gate::authorize('create', {{ $o->modelClassName }}::class);
 
-        $model = {{ $o->modelName }}::create($request->validated());
+        $model = {{ $o->modelClassName }}::create($request->validated());
 
         return response()->json($model);
     }
@@ -47,7 +47,7 @@ class {{ $o->modelName }}ApiController
      */
     public function show($id)
     {
-        $model = {{ $o->modelName }}::findOrFail($id);
+        $model = {{ $o->modelClassName }}::findOrFail($id);
         
         Gate::authorize('show', $model);
 
@@ -58,9 +58,9 @@ class {{ $o->modelName }}ApiController
     /**
      * Update the specified resource in storage.
      */
-    public function update({{ $o->modelName }}Request $request, $id)
+    public function update({{ $o->requestClassName }} $request, $id)
     {
-        $model = {{ $o->modelName }}::findOrFail($id);
+        $model = {{ $o->modelClassName }}::findOrFail($id);
 
         Gate::authorize('update', $model);
 
@@ -74,7 +74,7 @@ class {{ $o->modelName }}ApiController
     */
     public function destroy($id)
     {
-        $model = {{ $o->modelName }}::findOrFail($id);
+        $model = {{ $o->modelClassName }}::findOrFail($id);
 
         Gate::authorize('delete', $model);
 

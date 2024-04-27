@@ -35,7 +35,25 @@ class DataHolderImp extends DataHolder
     protected function modelMorphName() : string {
         return Str::snake($this->modelName);
     }
+
+
+    protected function serviceProviderClassName() : string {
+        return "{$this->moduleName}ServiceProvider";
+    }
     
+    protected function modelClassName() : string {
+        return $this->modelName;
+    }
+
+    protected function policyClassName() : string {
+        return "{$this->modelName}Policy";
+    }
+
+    protected function requestClassName() : string {
+        return "{$this->modelName}Request";
+    }
+
+
 
     protected function editableFields() : Collection
     {
@@ -55,34 +73,6 @@ class DataHolderImp extends DataHolder
      */
     protected function packageNamespace() : string {
         return Str::studly($this->vendorName).'\\'.$this->moduleName;
-    }
-
-    /**
-     * Model Namespace.
-     */
-    protected function modelNamespace() : string {
-        return $this->packageNamespace().'\Models';
-    }
-
-    /**
-     * Policy Namespace.
-     */
-    protected function policyNamespace() : string {
-        return $this->packageNamespace().'\Policies';
-    }
-
-    /**
-     * Controller Namespace.
-     */
-    protected function controllerNamespace() : string {
-        return $this->packageNamespace().'\Http\Controllers';
-    }
-
-    /**
-     * Request Namespace.
-     */
-    protected function requestNamespace() : string {
-        return $this->packageNamespace().'\Http\Requests';
     }
 
     

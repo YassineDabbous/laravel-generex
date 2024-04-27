@@ -10,12 +10,12 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 @endif
 
 /**
- * Class {{ $o->modelName }}
+ * Class {{ $o->modelClassName }}
 @foreach($o->fields as $field)
  * @@property ${{ $field['name'] }}
 @endforeach
  */
-class {{ $o->modelName }} extends Model
+class {{ $o->modelClassName }} extends Model
 {
     @if($o->useSoftDeletes)
     use SoftDeletes;

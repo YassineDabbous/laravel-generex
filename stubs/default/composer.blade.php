@@ -16,7 +16,7 @@
     "extra": {
         "laravel": {
             "providers": [
-                "{{ str_replace('\\', '\\\\', $o->packageNamespace) }}\\{{ $o->moduleName }}ServiceProvider"
+                "{{ str_replace('\\', '\\\\', $o->packageNamespace) }}\\{{ $o->serviceProviderClassName }}"
             ]
         }
     }

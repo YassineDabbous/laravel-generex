@@ -2,8 +2,6 @@
 
 namespace Yaseen\PackGen\Protocols;
 
-use Illuminate\Support\Str;
-
 abstract class DataHolder
 {
     /**
