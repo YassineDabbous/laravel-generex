@@ -4,7 +4,6 @@ namespace Yaseen\PackGen\Commands;
  
 use Illuminate\Console\Command;
 use Illuminate\Filesystem\Filesystem;
-use Illuminate\Foundation\Console\InteractsWithComposerPackages;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Schema;
 use Symfony\Component\Console\Input\InputArgument;
@@ -18,12 +17,7 @@ use Yaseen\PackGen\Protocols\PathProviderImp;
  * Class BaseCommand.
  */
 abstract class BaseCommand extends Command
-{
-    use InteractsWithComposerPackages;
-    
-    /**
-     * The filesystem instance.
-     */
+{    
     protected Filesystem $fs;
 
     protected DataHolder $dataHolder;
@@ -33,6 +27,8 @@ abstract class BaseCommand extends Command
     protected $schemaFile;
 
     protected $offline = false;
+
+    protected $singleModule = false;
     
     public function __construct(Filesystem $fs)
     {
@@ -40,6 +36,7 @@ abstract class BaseCommand extends Command
 
         $this->fs = $fs;
 
+        $this->singleModule = config('packgen.single_module', false);
         /**
          * @var string dataHolderClass;
          */
@@ -198,14 +195,15 @@ abstract class BaseCommand extends Command
     /**
      * Generate files from stubs
      */
-    protected function build($name, $stub, $path, $data = null) : static
+    protected function generate($stub, $path, $ignore = false) : static
     {
-        if ($this->fs->exists($path) && $this->ask($name.' already exist. Would you like to overwrite it (y/n)?', 'y') == 'n') {
+        $name = basename($path);
+        if ($this->fs->exists($path) && ($ignore || $this->ask($name.' already exist. Would you like to overwrite it (y/n)?', 'n') != 'y')) {
             return $this;
         }
 
         $this->info("Creating $name ...");
-        $template = view($stub, ['o' => $data ?? $this->dataHolder]);
+        $template = view($stub, ['o' => $this->dataHolder]);
         $this->write($path, $template);
 
         return $this;

@@ -38,6 +38,22 @@ return [
      */
     'path_provider' => PathProviderImp::class,
 
+
+    /**
+     * stubs
+     */
+    'stubs' => [
+        'packgen::default.composer' => 'composer.json',
+        'packgen::default.routes.api' => 'routes/{{$o->tableName}}_api.php',
+        'packgen::default.src.ServiceProvider' => '/src/{{$o->serviceProviderClassName}}.php',
+        'packgen::default.src.Model' => '/src/Models/{{$o->modelClassName}}.php',
+        'packgen::default.src.Policy' => '/src/Policies/{{$o->policyClassName}}.php',
+        'packgen::default.src.Request' => '/src/Http/Requests/{{$o->requestClassName}}.php',
+        'packgen::default.src.HasQueryBuilder' => '/src/Concerns/Has{{$o->modelName}}QueryBuilder.php',
+        'packgen::default.src.ApiController' => '/src/Http/Controllers/{{$o->modelName}}ApiController.php',
+    ],
+
+
     'model' => [
         /**
          * Default hidden columns

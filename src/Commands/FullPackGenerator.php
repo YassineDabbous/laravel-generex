@@ -40,20 +40,27 @@ class FullPackGenerator extends BaseCommand
         // generate model fields
         $this->generateFields($tableName);
 
-        //
-        foreach($this->pathProvider->paths($this->dataHolder) as $o){
-            $this->build($o['name'], $o['stub'], $o['path']);
+        // generate code
+        foreach($this->pathProvider->paths($this->dataHolder) as $stub => $path){
+            $path = \Blade::render($path, ['o' => $this->dataHolder ]);
+            $path = $this->packagePath($path);
+            $name = basename($path, '.php');
+            $ignore = false;
+            $this->info($path);
+            if($this->singleModule && in_array($name, ['composer.json', $this->dataHolder->serviceProviderClassName])){
+                $ignore = true;
+            }
+            $this->generate($stub, $path, $ignore);
+        }
+        if($this->singleModule){
+            $this->info('In Single Module mode, files such as "ServiceProvider" won\'t be automatically recreated and may need to be updated manually.');
         }
 
-        // dump($this->dataHolder->names);
-
-        $this->info('Created Successfully.');
  
-        if($this->ask('Package created. Would you like to install it (y/n)?', 'n') == 'n'){
+        if($this->ask('Package created successfully. \n Would you like to install it (y/n)?', 'n') != 'y'){
             return true;
         }
         
-        // $this->info('Be sure to add local  Successfully.');
         // adding local repository to composer.json
         $this->addPathRepository();
 
@@ -62,6 +69,10 @@ class FullPackGenerator extends BaseCommand
         return true;
     }
 
-
-
+    /**
+     * Package path.
+     */
+    protected function packagePath(string $path = '') : string {
+        return config('packgen.root', base_path('modules/')).$this->dataHolder->moduleName.'/'.$path;
+    }
 }
