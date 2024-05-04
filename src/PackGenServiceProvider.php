@@ -11,12 +11,15 @@ class PackGenServiceProvider extends ServiceProvider
                 FullPackGenerator::class,
             ]);
 
-            $this->loadViewsFrom(__DIR__.'/../resources/views', 'packgen');
-
             $this->mergeConfigFrom(__DIR__.'/config.php', 'packgen');
             $this->publishes([
                 __DIR__.'/config.php' => config_path('packgen.php'),
-            ], 'packgen');
+            ], 'packgen-config');
+
+            $this->loadViewsFrom(__DIR__.'/../resources/views', 'packgen');
+            $this->publishes([
+                __DIR__.'/../resources/views' => resource_path('views/vendor/packgen'),
+            ], 'packgen-templates');
         }
 
     }
