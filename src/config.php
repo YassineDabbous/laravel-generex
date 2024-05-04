@@ -12,10 +12,14 @@ return [
      */
     'schemas_folder'    => resource_path('packgen_schemas/'),
 
-    /**
-     * if true, all packages will be combined in one module
-     */
+    /** If true, all packages will be combined in one module. */
     'single_module' => false,
+    /** Files that shouldn't be overwritten in single_module mode. */
+    'module_files'  => [
+        'composer', 
+        'ServiceProvider',
+    ],
+
 
     /**
      * Output folder.

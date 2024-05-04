@@ -24,6 +24,16 @@ use Illuminate\Filesystem\Filesystem;
     {
         
         if ( $this->fs->exists($stub->destination) ) {
+            // don't overwrite files in single-module mode
+            $isModuleFile = in_array($stub->sourceName, config('packgen.module_files', [
+                'composer', 
+                'ServiceProvider',
+            ]));
+            if($this->dataHolder->isSingleModule && $isModuleFile){
+                return false;
+            }
+
+            // confirm overwriting other files
             if( !confirm($stub->destinationName.' already exist. Would you like to overwrite it?') ){
                 return false;
             }
