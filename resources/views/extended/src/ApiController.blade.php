@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
 use {{ $o->packageNamespace }}\Models\{{ $o->modelClassName }};
 use {{ $o->packageNamespace }}\Http\Requests\{{ $o->requestClassName }};
+use {{ $o->packageNamespace }}\Concerns\Has{{ $o->modelName }}QueryBuilder;
 
 
 class {{ $o->modelName }}ApiController
@@ -19,7 +20,9 @@ class {{ $o->modelName }}ApiController
     {
         Gate::authorize('index', {{ $o->modelClassName }}::class);
 
-        $results = {{ $o->modelClassName }}::paginate();
+        $filter = $this->filter({{ $o->modelClassName }}::query(), $request);
+
+        $results = $filter->paginate();
 
         return response()->json($results);
     }

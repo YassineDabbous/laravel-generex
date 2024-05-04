@@ -43,18 +43,28 @@ return [
     'data_generator' => DataGeneratorImp::class,
 
 
-    /**
-     * stubs
-     */
-    'stubs' => [
-        'packgen::basic.composer' => 'composer.json',
-        'packgen::basic.routes.api' => 'routes/{{$o->tableName}}_api.php',
-        'packgen::basic.src.ServiceProvider' => '/src/{{$o->serviceProviderClassName}}.php',
-        'packgen::basic.src.Model' => '/src/Models/{{$o->modelClassName}}.php',
-        'packgen::basic.src.Policy' => '/src/Policies/{{$o->policyClassName}}.php',
-        'packgen::basic.src.Request' => '/src/Http/Requests/{{$o->requestClassName}}.php',
-        'packgen::basic.src.HasQueryBuilder' => '/src/Concerns/Has{{$o->modelName}}QueryBuilder.php',
-        'packgen::basic.src.ApiController' => '/src/Http/Controllers/{{$o->modelName}}ApiController.php',
+    /** templates used to generate your app files */
+    'templates' => [
+        'basic' => [
+            'packgen::basic.composer' => 'composer.json',
+            'packgen::basic.routes.api' => 'routes/{{$o->tableName}}_api.php',
+            'packgen::basic.src.ServiceProvider' => '/src/{{$o->serviceProviderClassName}}.php',
+            'packgen::basic.src.Model' => '/src/Models/{{$o->modelClassName}}.php',
+            'packgen::basic.src.Policy' => '/src/Policies/{{$o->policyClassName}}.php',
+            'packgen::basic.src.Request' => '/src/Http/Requests/{{$o->requestClassName}}.php',
+            'packgen::basic.src.ApiController' => '/src/Http/Controllers/{{$o->modelName}}ApiController.php',
+        ],
+        'extended' => [
+            'packgen::basic.composer' => 'composer.json',
+            'packgen::basic.routes.api' => 'routes/{{$o->tableName}}_api.php',
+            'packgen::basic.src.ServiceProvider' => '/src/{{$o->serviceProviderClassName}}.php',
+            'packgen::basic.src.Model' => '/src/Models/{{$o->modelClassName}}.php',
+            'packgen::basic.src.Policy' => '/src/Policies/{{$o->policyClassName}}.php',
+            'packgen::basic.src.Request' => '/src/Http/Requests/{{$o->requestClassName}}.php',
+
+            'packgen::extended.src.HasQueryBuilder' => '/src/Concerns/Has{{$o->modelName}}QueryBuilder.php',
+            'packgen::extended.src.ApiController' => '/src/Http/Controllers/{{$o->modelName}}ApiController.php',
+        ]
     ],
 
 

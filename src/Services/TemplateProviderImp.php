@@ -24,16 +24,30 @@ class TemplateProviderImp implements TemplateProvider
      * @return array<\Yaseen\PackGen\Protocols\StubData> 
     */
     public function stubs() : array {    
-        $paths = config('packgen.stubs', []);
-        $templates = [];
+        $paths = $this->chooseTemplate();
+        $stubs = [];
         foreach ($paths as $source => $destination) {
             $path = \Blade::render($destination, ['o' => $this->dataHolder ]);
             $path = $this->packagePath($path);
             
-            $templates[] = new StubData(source: $source, destination: $path);
+            $stubs[] = new StubData(source: $source, destination: $path);
         }
-        return $templates;
+        return $stubs;
     }
 
+    public function chooseTemplate() : array {
+        $templates = collect( config('packgen.templates', []) );
+        if($templates->count() == 0){
+            throw new \Exception("Can't proceed without templates !");
+        }
+        if( $templates->count() == 1 ){
+            return $templates->first();
+        }
+        $template = select(
+            'Choose a template:',
+            $templates->keys(),
+        );
+        return $templates->get($template);
+    }
 
 }
