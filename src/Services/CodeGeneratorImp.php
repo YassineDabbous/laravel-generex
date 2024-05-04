@@ -8,6 +8,7 @@ use Yaseen\PackGen\Protocols\StubData;
 use function Laravel\Prompts\info;
 use function Laravel\Prompts\confirm;
 use Illuminate\Filesystem\Filesystem;
+use Illuminate\Support\Str;
 
  class CodeGeneratorImp implements CodeGenerator
 {
@@ -21,6 +22,28 @@ use Illuminate\Filesystem\Filesystem;
      * Handle file generation
      */
     public function handle(StubData $stub) : bool
+    {
+        $method = 'generate'.Str::studly($stub->sourceName);
+        if(method_exists($this, $method)){
+            return $this->{$method}($stub);
+        }
+        return $this->generate($stub);
+    }
+
+    // /** Example of custom generation by template name (for ServiceProvider). */
+    // public function generateServiceProvider(StubData $stub) : bool
+    // {
+    //     #
+    //     # generate ServiceProvider file
+    //     #
+    //     return true;
+    // }
+    
+
+    /**
+     * Default file generation method
+     */
+    public function generate(StubData $stub) : bool
     {
         
         if ( $this->fs->exists($stub->destination) ) {
