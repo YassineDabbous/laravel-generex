@@ -1,6 +1,4 @@
-@php
-    echo "<?php".PHP_EOL;
-@endphp
+@phpTag
 
 namespace {{ $o->packageNamespace }}\Models;
 

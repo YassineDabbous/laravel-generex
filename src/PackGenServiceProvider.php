@@ -1,5 +1,6 @@
 <?php
 namespace Yaseen\PackGen;
+use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\ServiceProvider;
 use Yaseen\PackGen\Commands\FullPackGenerator;
 class PackGenServiceProvider extends ServiceProvider
@@ -20,6 +21,10 @@ class PackGenServiceProvider extends ServiceProvider
             $this->publishes([
                 __DIR__.'/../resources/views' => resource_path('views/vendor/packgen'),
             ], 'packgen-templates');
+            
+            Blade::directive('phpTag', function () {
+                return '<?php echo "<?php\n\n" ?>';
+            });
         }
 
     }

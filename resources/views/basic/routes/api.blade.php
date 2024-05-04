@@ -1,6 +1,4 @@
-@php
-    echo "<?php".PHP_EOL;
-@endphp
+@phpTag
 
 use Illuminate\Routing\Router;
 use Illuminate\Support\Facades\Route;
