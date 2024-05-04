@@ -1,6 +1,10 @@
 <?php
 
 namespace Yaseen\PackGen\Commands;
+use Yaseen\PackGen\Protocols\CodeGenerator;
+use Yaseen\PackGen\Protocols\DataHolder;
+use Yaseen\PackGen\Protocols\DataGenerator;
+use Yaseen\PackGen\Protocols\TemplateProvider;
 
 /**
  * Class FullPackGenerator.
@@ -23,56 +27,46 @@ class FullPackGenerator extends BaseCommand
      */
     protected $description = 'Generate a laravel package with WEB & API CRUD operations';
 
+    public function __construct(
+        DataHolder $dataHolder
+    ){
+        parent::__construct();
+        $this->dataHolder = $dataHolder;
+    }
 
-    
-    public function handle() : bool|null
+    public function handle(CodeGenerator $codeGenerator, DataGenerator $dataGenerator, TemplateProvider $templateProvider) : bool|null
     {
         $this->info('Running Package Generator ...');
 
         $tableName = $this->getNameInput();
-        if(!$this->validate($tableName)){
+        if(!$dataGenerator->validate($tableName)){
             return false;
         }
-        
-        // load vendor and package name
+
+        // load "vendor" and "package" names
         $this->buildOptions();
-        
+
         // generate model fields
-        $this->generateFields($tableName);
+        $dataGenerator->generateFields($tableName);
 
         // generate code
-        foreach($this->pathProvider->paths($this->dataHolder) as $stub => $path){
-            $path = \Blade::render($path, ['o' => $this->dataHolder ]);
-            $path = $this->packagePath($path);
-            $name = basename($path, '.php');
-            $ignore = false;
-            $this->info($path);
-            if($this->singleModule && in_array($name, ['composer.json', $this->dataHolder->serviceProviderClassName])){
-                $ignore = true;
-            }
-            $this->generate($stub, $path, $ignore);
+        foreach($templateProvider->stubs() as $stub){
+            $codeGenerator->handle($stub);
         }
-        if($this->singleModule){
+
+        if($this->dataHolder->isSingleModule){
             $this->info('In Single Module mode, files such as "ServiceProvider" won\'t be automatically recreated and may need to be updated manually.');
         }
 
- 
         if($this->ask('Package created successfully. \n Would you like to install it (y/n)?', 'n') != 'y'){
             return true;
         }
-        
+
         // adding local repository to composer.json
         $this->addPathRepository();
 
         $this->installPackage();
 
         return true;
-    }
-
-    /**
-     * Package path.
-     */
-    protected function packagePath(string $path = '') : string {
-        return config('packgen.root', base_path('modules/')).$this->dataHolder->moduleName.'/'.$path;
     }
 }

@@ -1,6 +1,9 @@
 <?php
-use Yaseen\PackGen\Protocols\DataHolderImp;
-use Yaseen\PackGen\Protocols\PathProviderImp;
+
+use Yaseen\PackGen\Services\CodeGeneratorImp;
+use Yaseen\PackGen\Services\DataHolderImp;
+use Yaseen\PackGen\Services\DataGeneratorImp;
+use Yaseen\PackGen\Services\TemplateProviderImp;
 
 return [
     
@@ -27,16 +30,17 @@ return [
         'package' => null,
     ],
 
-
-    /**
-     * DataHolder implementation class 
-     */
+    /** DataHolder implementation class  */
     'data_holder' => DataHolderImp::class,
 
-    /**
-     * DataHolder implementation class 
-     */
-    'path_provider' => PathProviderImp::class,
+    /** TemplateProvider implementation class  */
+    'template_provider' => TemplateProviderImp::class,
+
+    /** CodeGenerator implementation class  */
+    'code_generator' => CodeGeneratorImp::class,
+
+    /** CodeGenerator implementation class  */
+    'data_generator' => DataGeneratorImp::class,
 
 
     /**

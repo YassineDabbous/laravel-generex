@@ -1,9 +1,10 @@
 <?php
 
-namespace Yaseen\PackGen\Protocols;
+namespace Yaseen\PackGen\Services;
 
 use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
+use Yaseen\PackGen\Protocols\DataHolder;
 
 class DataHolderImp extends DataHolder
 {
@@ -14,18 +15,6 @@ class DataHolderImp extends DataHolder
             }
         }
         return false;
-    }
-
-    protected function vendorName() : string {
-        return config('namespace.vendor', 'yaseen');
-    }
-
-    protected function packageName() : string {
-        return config('namespace.package', Str::singular($this->tableName) );
-    }
-
-    protected function moduleName() : string {
-        return Str::studly($this->packageName);
     }
 
     protected function modelName() : string {

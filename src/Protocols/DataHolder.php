@@ -2,10 +2,12 @@
 
 namespace Yaseen\PackGen\Protocols;
 
+use Illuminate\Support\Str;
+
 abstract class DataHolder
 {
     /**
-     * Names used in stubs.
+     * Names used in templates.
      */
     public array $replacements = [];
 
@@ -69,14 +71,20 @@ abstract class DataHolder
     }
 
 
+    protected function isSingleModule() : bool {
+        return config('packgen.single_module', false);
+    }
+
+    protected function vendorName() : string {
+        return config('packgen.namespace.vendor', 'yaseen');
+    }
+
+    protected function packageName() : string {
+        return config('packgen.namespace.package') ?? Str::singular($this->tableName);
+    }
+
+    protected function moduleName() : string {
+        return Str::studly($this->packageName);
+    }
     
-    protected abstract function useSoftDeletes() : bool;
-
-    protected abstract function vendorName() : string;
-
-    protected abstract function packageName() : string;
-
-    protected abstract function moduleName() : string;
-    
-    protected abstract function modelName() : string;
 }

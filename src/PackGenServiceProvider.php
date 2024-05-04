@@ -1,8 +1,17 @@
 <?php
-namespace Yaseen\PackGen;
+
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\ServiceProvider;
 use Yaseen\PackGen\Commands\FullPackGenerator;
+use Yaseen\PackGen\Protocols\CodeGenerator;
+use Yaseen\PackGen\Protocols\DataHolder;
+use Yaseen\PackGen\Services\CodeGeneratorImp;
+use Yaseen\PackGen\Services\DataHolderImp;
+use Yaseen\PackGen\Protocols\DataGenerator;
+use Yaseen\PackGen\Protocols\TemplateProvider;
+use Yaseen\PackGen\Services\DataGeneratorImp;
+use Yaseen\PackGen\Services\TemplateProviderImp;
+
 class PackGenServiceProvider extends ServiceProvider
 {
     public function boot()
@@ -25,6 +34,11 @@ class PackGenServiceProvider extends ServiceProvider
             Blade::directive('phpTag', function () {
                 return '<?php echo "<?php\n\n" ?>';
             });
+
+            $this->app->singleton(DataHolder::class, config('packgen.data_holder', DataHolderImp::class));
+            $this->app->singleton(TemplateProvider::class, config('packgen.template_provider', TemplateProviderImp::class));
+            $this->app->singleton(CodeGenerator::class, config('packgen.code_generator', CodeGeneratorImp::class));
+            $this->app->singleton(DataGenerator::class, config('packgen.data_generator', DataGeneratorImp::class));
         }
 
     }
