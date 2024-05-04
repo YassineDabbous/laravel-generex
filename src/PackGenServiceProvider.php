@@ -11,7 +11,7 @@ class PackGenServiceProvider extends ServiceProvider
                 FullPackGenerator::class,
             ]);
 
-            $this->loadViewsFrom(__DIR__.'/../stubs', 'packgen');
+            $this->loadViewsFrom(__DIR__.'/../resources/views', 'packgen');
 
             $this->mergeConfigFrom(__DIR__.'/config.php', 'packgen');
             $this->publishes([
