@@ -43,14 +43,14 @@ return [
      * stubs
      */
     'stubs' => [
-        'packgen::default.composer' => 'composer.json',
-        'packgen::default.routes.api' => 'routes/{{$o->tableName}}_api.php',
-        'packgen::default.src.ServiceProvider' => '/src/{{$o->serviceProviderClassName}}.php',
-        'packgen::default.src.Model' => '/src/Models/{{$o->modelClassName}}.php',
-        'packgen::default.src.Policy' => '/src/Policies/{{$o->policyClassName}}.php',
-        'packgen::default.src.Request' => '/src/Http/Requests/{{$o->requestClassName}}.php',
-        'packgen::default.src.HasQueryBuilder' => '/src/Concerns/Has{{$o->modelName}}QueryBuilder.php',
-        'packgen::default.src.ApiController' => '/src/Http/Controllers/{{$o->modelName}}ApiController.php',
+        'packgen::basic.composer' => 'composer.json',
+        'packgen::basic.routes.api' => 'routes/{{$o->tableName}}_api.php',
+        'packgen::basic.src.ServiceProvider' => '/src/{{$o->serviceProviderClassName}}.php',
+        'packgen::basic.src.Model' => '/src/Models/{{$o->modelClassName}}.php',
+        'packgen::basic.src.Policy' => '/src/Policies/{{$o->policyClassName}}.php',
+        'packgen::basic.src.Request' => '/src/Http/Requests/{{$o->requestClassName}}.php',
+        'packgen::basic.src.HasQueryBuilder' => '/src/Concerns/Has{{$o->modelName}}QueryBuilder.php',
+        'packgen::basic.src.ApiController' => '/src/Http/Controllers/{{$o->modelName}}ApiController.php',
     ],
 
 
