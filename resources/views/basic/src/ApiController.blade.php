@@ -10,7 +10,6 @@ use {{ $o->packageNamespace }}\Http\Requests\{{ $o->requestClassName }};
 
 class {{ $o->modelName }}ApiController
 {
-    use Has{{ $o->modelName }}QueryBuilder;
 
     /**
      * Display a listing of the resource.
