@@ -103,7 +103,7 @@ use Yaseen\PackGen\Protocols\DataGenerator;
     protected function generateFieldsFromDb()
     {
         info("Using fields from table: {$this->dataHolder->tableName}");
-        $tableColumns = Schema::getColumns($this->dataHolder->tableName);
+        $tableColumns = Schema::connection($this->dataHolder->connectionName)->getColumns($this->dataHolder->tableName);
         $this->dataHolder->fields = $this->mergeColumnsToFields( $tableColumns );
         return $this;
     }

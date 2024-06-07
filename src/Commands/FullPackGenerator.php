@@ -20,6 +20,7 @@ class FullPackGenerator extends BaseCommand
                             {name : Table name}
                             {--vendor= : Vendor name}
                             {--package= : Package name}
+                            {--connection= : Connection name}
                             ';
 
     /**

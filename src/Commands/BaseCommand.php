@@ -31,15 +31,20 @@ abstract class BaseCommand extends Command
      */
     protected function buildOptions()
     {
-
+        
         $vendor = $this->option('vendor');
         if (! empty($vendor)) {
             $this->dataHolder->vendorName = strtolower($vendor);
         }
-        
+
         $package = $this->option('package');
         if (! empty($package)) {
             $this->dataHolder->packageName = strtolower($package);
+        }
+
+        $connection = $this->option('connection');
+        if (! empty($connection)) {
+            $this->dataHolder->connectionName = strtolower($connection);
         }
 
         return $this;

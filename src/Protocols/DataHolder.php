@@ -90,4 +90,8 @@ abstract class DataHolder
         return Str::studly($this->packageName);
     }
     
+    protected function connectionName() {
+        return $this->replacements['connectionName'] ?? null;
+    }
+    
 }

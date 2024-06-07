@@ -18,6 +18,10 @@ class {{ $o->modelClassName }} extends Model
     @if($o->useSoftDeletes)
     use SoftDeletes;
     @endif
+    @if($o->connectionName)
+    protected $connection = '{{ $o->connectionName }}';
+    @endif
+
     protected $table = '{{ $o->tableName }}';
     
     public $timestamps = false;
