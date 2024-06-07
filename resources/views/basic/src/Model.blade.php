@@ -19,10 +19,22 @@ class {{ $o->modelClassName }} extends Model
     use SoftDeletes;
     @endif
     protected $table = '{{ $o->tableName }}';
+    
+    public $timestamps = false;
 
     /**
      * Attributes that should be mass-assignable.
      */
     protected $fillable = [{!! $o->modelFillableValues !!}];
+
+    
+    @if($o->fieldsWithDefaultValues->count()) 
+    /**
+     * Default Values.
+     */
+    protected $attributes = [
+    @foreach($o->fieldsWithDefaultValues as $field) '{{ $field['name'] }}' => {!! $field['default'] !!}, @endforeach 
+    ];
+    @endif
 
 }

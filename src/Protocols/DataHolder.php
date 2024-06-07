@@ -45,11 +45,14 @@ abstract class DataHolder
             'email_verified_at',
             'deleted_at',
     ];
+    
+    public array $defaults = [];
 
     public function __construct()
     {
         $this->unfillable = config('packgen.model.unfillable', $this->unfillable);
         $this->hidden = config('packgen.model.hidden', $this->hidden);
+        $this->defaults = config('packgen.model.defaults', $this->defaults);
     }
 
 

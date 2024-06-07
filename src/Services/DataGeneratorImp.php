@@ -3,6 +3,8 @@
 namespace Yaseen\PackGen\Services;
 
 use Yaseen\PackGen\Protocols\DataHolder;
+
+use function Laravel\Prompts\info;
 use function Laravel\Prompts\warning;
 use function Laravel\Prompts\error;
 use function Laravel\Prompts\text;
@@ -81,12 +83,16 @@ use Yaseen\PackGen\Protocols\DataGenerator;
             if(!isset($field['name'])){
                 throw new \Exception("Some fields doesn't have a name, File: {$this->schemaFile}");
             }
+
             $unfillable = in_array($field['name'], $this->dataHolder->unfillable);
             $hidden = in_array($field['name'], $this->dataHolder->hidden);
-            $field['searchable'] ??= $field['searchable'] ?? !$hidden;
-            $field['editable'] ??= $field['editable'] ?? !$unfillable;
-            $field['inView'] ??= $field['inView'] ?? !$hidden;
-            $field['inGrid'] ??= $field['inGrid'] ?? !$hidden;
+            $default = $this->dataHolder->defaults[$field['name']] ?? null;
+            
+            $field['searchable'] ??= !$hidden;
+            $field['editable'] ??= !$unfillable;
+            $field['inView'] ??= !$hidden;
+            $field['inGrid'] ??= !$hidden;
+            $field['default'] ??= $default;
         }
         $this->dataHolder->fields = collect($fields);
     }
@@ -128,16 +134,18 @@ use Yaseen\PackGen\Protocols\DataGenerator;
 
             $unfillable = in_array($column['name'], $this->dataHolder->unfillable);
             $hidden = in_array($column['name'], $this->dataHolder->hidden);
+            $default = $this->dataHolder->defaults[$column['name']] ?? null;
             
             // fill absent keys
             $field['name'] ??= $column['name'];
             $field['dbType'] ??= $column['type_name'];
             $field['inputType'] ??= $dbToHtml($field['dbType']);
             $field['runtimeType'] ??= $dbToCast($field['dbType']);
-            $field['searchable'] ??= $field['searchable'] ?? !$hidden;
-            $field['editable'] ??= $field['editable'] ?? !$unfillable;
-            $field['inView'] ??= $field['inView'] ?? !$hidden;
-            $field['inGrid'] ??= $field['inView'] ?? !$hidden;
+            $field['searchable'] ??= !$hidden;
+            $field['editable'] ??= !$unfillable;
+            $field['inView'] ??= !$hidden;
+            $field['inGrid'] ??= !$hidden;
+            $field['default'] ??= $column['default'] ?? $default;
             
             // anticipating rules from column info
             $rules = $field['rules'] ?? [];

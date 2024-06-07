@@ -6,7 +6,7 @@ use Yaseen\PackGen\Services\DataGeneratorImp;
 use Yaseen\PackGen\Services\TemplateProviderImp;
 
 return [
-    
+
     /**
      * Schema folder path.
      */
@@ -73,6 +73,10 @@ return [
 
 
     'model' => [
+        'defaults' => [
+            'meta' => "'{}'",
+        ],
+
         /**
          * Default hidden columns
          */

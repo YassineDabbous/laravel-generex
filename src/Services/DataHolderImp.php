@@ -44,6 +44,11 @@ class DataHolderImp extends DataHolder
 
 
 
+    protected function fieldsWithDefaultValues() : Collection
+    {
+        return $this->fields->where(fn($c) => isset($c['default']) && $c['default']);
+    }
+
     protected function editableFields() : Collection
     {
         return $this->fields->where(fn($c) => !isset($c['editable']) || $c['editable']);
