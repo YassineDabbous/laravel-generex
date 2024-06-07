@@ -38,7 +38,7 @@ use Illuminate\Support\Str;
     //     #
     //     return true;
     // }
-    
+
 
     /**
      * Default file generation method
@@ -68,7 +68,7 @@ use Illuminate\Support\Str;
         return true;
     }
 
-    
+
     /**
      * Write the contents of a file.
      */

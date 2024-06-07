@@ -51,12 +51,26 @@ return [
     'templates' => [
         'basic' => [
             'packgen::basic.composer' => 'composer.json',
-            'packgen::basic.routes.api' => 'routes/{{$o->tableName}}_api.php',
             'packgen::basic.src.ServiceProvider' => '/src/{{$o->serviceProviderClassName}}.php',
+
             'packgen::basic.src.Model' => '/src/Models/{{$o->modelClassName}}.php',
             'packgen::basic.src.Policy' => '/src/Policies/{{$o->policyClassName}}.php',
             'packgen::basic.src.Request' => '/src/Http/Requests/{{$o->requestClassName}}.php',
+
+            // api
+            'packgen::basic.routes.api' => 'routes/{{$o->tableName}}_api.php',
             'packgen::basic.src.ApiController' => '/src/Http/Controllers/{{$o->modelName}}ApiController.php',
+
+            // web
+            'packgen::basic.routes.web' => 'routes/{{$o->tableName}}_web.php',
+            'packgen::basic.src.WebController' => '/src/Http/Controllers/{{$o->modelName}}WebController.php',
+            'packgen::basic.views.layout' => 'resources/views/layout.blade.php',
+            'packgen::basic.views.index' => 'resources/views/index.blade.php',
+            'packgen::basic.views.create' => 'resources/views/create.blade.php',
+            'packgen::basic.views.edit' => 'resources/views/edit.blade.php',
+            'packgen::basic.views.show' => 'resources/views/show.blade.php',
+            'packgen::basic.views.card' => 'resources/views/card.blade.php',
+            'packgen::basic.views.form' => 'resources/views/form.blade.php',
         ],
         'extended' => [
             'packgen::basic.composer' => 'composer.json',

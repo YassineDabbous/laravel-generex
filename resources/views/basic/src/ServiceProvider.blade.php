@@ -19,8 +19,8 @@ class {{ $o->serviceProviderClassName }} extends ServiceProvider
 		]);
         
         $this->loadRoutesFrom(__DIR__.'/../routes/{{ $o->tableName }}_api.php');
-        // $this->loadRoutesFrom(__DIR__.'/../routes/{{ $o->tableName }}_web.php');
-        // $this->loadViewsFrom(__DIR__.'/../resources/views', '{{ $o->packageName }}');
+        $this->loadRoutesFrom(__DIR__.'/../routes/{{ $o->tableName }}_web.php');
+        $this->loadViewsFrom(__DIR__.'/../resources/views', '{{ $o->packageName }}');
         // $this->loadMigrationsFrom(__DIR__.'/../database/migrations');
         // $this->loadTranslationsFrom(__DIR__.'/../resources/lang', '{{ $o->packageName }}');
     }

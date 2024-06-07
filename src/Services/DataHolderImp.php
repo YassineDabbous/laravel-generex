@@ -54,6 +54,10 @@ class DataHolderImp extends DataHolder
         return $this->fields->where(fn($c) => !isset($c['editable']) || $c['editable']);
     }
 
+    protected function visibleFields() : Collection
+    {
+        return $this->fields->where(fn($c) => !isset($c['inView']) || $c['inView']);
+    }
 
 
     protected function modelFillableValues() {
