@@ -1,6 +1,6 @@
 <?php
 
-namespace Yaseen\PackGen\Protocols;
+namespace YassineDabbous\Generex\Protocols;
 
 use Illuminate\Support\Str;
 
@@ -50,9 +50,9 @@ abstract class DataHolder
 
     public function __construct()
     {
-        $this->unfillable = config('packgen.model.unfillable', $this->unfillable);
-        $this->hidden = config('packgen.model.hidden', $this->hidden);
-        $this->defaults = config('packgen.model.defaults', $this->defaults);
+        $this->unfillable = config('generex.model.unfillable', $this->unfillable);
+        $this->hidden = config('generex.model.hidden', $this->hidden);
+        $this->defaults = config('generex.model.defaults', $this->defaults);
     }
 
 
@@ -88,15 +88,15 @@ abstract class DataHolder
 
 
     protected function isSingleModule() : bool {
-        return config('packgen.single_module', false);
+        return config('generex.single_module', false);
     }
 
     protected function vendorName() : string {
-        return config('packgen.namespace.vendor', 'yaseen');
+        return config('generex.namespace.vendor', 'generex');
     }
 
     protected function packageName() : string {
-        return config('packgen.namespace.package') ?? Str::singular($this->tableName);
+        return config('generex.namespace.package') ?? Str::singular($this->tableName);
     }
 
     protected function moduleName() : string {

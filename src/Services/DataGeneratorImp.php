@@ -1,8 +1,8 @@
 <?php
 
-namespace Yaseen\PackGen\Services;
+namespace YassineDabbous\Generex\Services;
 
-use Yaseen\PackGen\Protocols\DataHolder;
+use YassineDabbous\Generex\Protocols\DataHolder;
 
 use function Laravel\Prompts\info;
 use function Laravel\Prompts\warning;
@@ -12,7 +12,7 @@ use function Laravel\Prompts\text;
 use Illuminate\Filesystem\Filesystem;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Schema;
-use Yaseen\PackGen\Protocols\DataGenerator;
+use YassineDabbous\Generex\Protocols\DataGenerator;
 
  class DataGeneratorImp implements DataGenerator
 {
@@ -51,7 +51,7 @@ use Yaseen\PackGen\Protocols\DataGenerator;
     
     
     protected function schemaFolder() : string {
-        return config('packgen.schemas_folder', resource_path('packgen_schemas/'));
+        return config('generex.schemas_folder', resource_path('generex_schemas/'));
     }
     
  

@@ -1,17 +1,17 @@
 <?php
 
-use Yaseen\PackGen\Services\CodeGeneratorFromBlade;
-use Yaseen\PackGen\Services\CodeGeneratorFromStub;
-use Yaseen\PackGen\Services\DataHolderImp;
-use Yaseen\PackGen\Services\DataGeneratorImp;
-use Yaseen\PackGen\Services\TemplateProviderImp;
+use YassineDabbous\Generex\Services\CodeGeneratorFromBlade;
+use YassineDabbous\Generex\Services\CodeGeneratorFromStub;
+use YassineDabbous\Generex\Services\DataHolderImp;
+use YassineDabbous\Generex\Services\DataGeneratorImp;
+use YassineDabbous\Generex\Services\TemplateProviderImp;
 
 return [
 
     /**
      * Schema folder path.
      */
-    'schemas_folder'    => resource_path('packgen_schemas/'),
+    'schemas_folder'    => resource_path('generex_schemas/'),
 
     /** If true, all packages will be combined in one module. */
     'single_module' => false,
@@ -31,7 +31,7 @@ return [
      * Package namespace.
      */
     'namespace' => [
-        'vendor' => 'yaseen',
+        'vendor' => 'generex',
         'package' => null,
     ],
 
@@ -51,42 +51,42 @@ return [
     /** templates used to generate your app files */
     'templates' => [
         'basic' => [
-            'packgen::basic.composer' => 'composer.json',
-            'packgen::basic.src.ServiceProvider' => '/src/{{$o->serviceProviderClassName}}.php',
+            'generex::basic.composer' => 'composer.json',
+            'generex::basic.src.ServiceProvider' => '/src/{{$o->serviceProviderClassName}}.php',
 
-            'packgen::basic.src.Model' => '/src/Models/{{$o->modelClassName}}.php',
-            'packgen::basic.src.Policy' => '/src/Policies/{{$o->policyClassName}}.php',
-            'packgen::basic.src.Request' => '/src/Http/Requests/{{$o->requestClassName}}.php',
+            'generex::basic.src.Model' => '/src/Models/{{$o->modelClassName}}.php',
+            'generex::basic.src.Policy' => '/src/Policies/{{$o->policyClassName}}.php',
+            'generex::basic.src.Request' => '/src/Http/Requests/{{$o->requestClassName}}.php',
 
             // api
-            'packgen::basic.routes.api' => 'routes/{{$o->tableName}}_api.php',
-            'packgen::basic.src.ApiController' => '/src/Http/Controllers/{{$o->modelName}}ApiController.php',
+            'generex::basic.routes.api' => 'routes/{{$o->tableName}}_api.php',
+            'generex::basic.src.ApiController' => '/src/Http/Controllers/{{$o->modelName}}ApiController.php',
 
             // web
-            'packgen::basic.routes.web' => 'routes/{{$o->tableName}}_web.php',
-            'packgen::basic.src.WebController' => '/src/Http/Controllers/{{$o->modelName}}WebController.php',
-            'packgen::basic.views.layout' => 'resources/views/layout.blade.php',
-            'packgen::basic.views.index' => 'resources/views/index.blade.php',
-            'packgen::basic.views.create' => 'resources/views/create.blade.php',
-            'packgen::basic.views.edit' => 'resources/views/edit.blade.php',
-            'packgen::basic.views.show' => 'resources/views/show.blade.php',
-            'packgen::basic.views.card' => 'resources/views/card.blade.php',
-            'packgen::basic.views.form' => 'resources/views/form.blade.php',
+            'generex::basic.routes.web' => 'routes/{{$o->tableName}}_web.php',
+            'generex::basic.src.WebController' => '/src/Http/Controllers/{{$o->modelName}}WebController.php',
+            'generex::basic.views.layout' => 'resources/views/layout.blade.php',
+            'generex::basic.views.index' => 'resources/views/index.blade.php',
+            'generex::basic.views.create' => 'resources/views/create.blade.php',
+            'generex::basic.views.edit' => 'resources/views/edit.blade.php',
+            'generex::basic.views.show' => 'resources/views/show.blade.php',
+            'generex::basic.views.card' => 'resources/views/card.blade.php',
+            'generex::basic.views.form' => 'resources/views/form.blade.php',
         ],
         'extended' => [
-            'packgen::basic.composer' => 'composer.json',
-            'packgen::basic.routes.api' => 'routes/{{$o->tableName}}_api.php',
-            'packgen::basic.src.ServiceProvider' => '/src/{{$o->serviceProviderClassName}}.php',
-            'packgen::basic.src.Model' => '/src/Models/{{$o->modelClassName}}.php',
-            'packgen::basic.src.Policy' => '/src/Policies/{{$o->policyClassName}}.php',
-            'packgen::basic.src.Request' => '/src/Http/Requests/{{$o->requestClassName}}.php',
+            'generex::basic.composer' => 'composer.json',
+            'generex::basic.routes.api' => 'routes/{{$o->tableName}}_api.php',
+            'generex::basic.src.ServiceProvider' => '/src/{{$o->serviceProviderClassName}}.php',
+            'generex::basic.src.Model' => '/src/Models/{{$o->modelClassName}}.php',
+            'generex::basic.src.Policy' => '/src/Policies/{{$o->policyClassName}}.php',
+            'generex::basic.src.Request' => '/src/Http/Requests/{{$o->requestClassName}}.php',
 
-            'packgen::extended.src.HasQueryBuilder' => '/src/Concerns/Has{{$o->modelName}}QueryBuilder.php',
-            'packgen::extended.src.ApiController' => '/src/Http/Controllers/{{$o->modelName}}ApiController.php',
+            'generex::extended.src.HasQueryBuilder' => '/src/Concerns/Has{{$o->modelName}}QueryBuilder.php',
+            'generex::extended.src.ApiController' => '/src/Http/Controllers/{{$o->modelName}}ApiController.php',
         ],
         'plain_stub' => [
-            'packgen::plain_stub.composer' => 'composer.json',
-            'packgen::plain_stub.src.ServiceProvider' => '/src/{serviceProviderClassName}.php',
+            'generex::plain_stub.composer' => 'composer.json',
+            'generex::plain_stub.src.ServiceProvider' => '/src/{serviceProviderClassName}.php',
         ],
     ],
 

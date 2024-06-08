@@ -1,10 +1,10 @@
 <?php
 
-namespace Yaseen\PackGen\Services;
+namespace YassineDabbous\Generex\Services;
 
-use Yaseen\PackGen\Protocols\CodeGenerator;
-use Yaseen\PackGen\Protocols\DataHolder;
-use Yaseen\PackGen\Protocols\StubData;
+use YassineDabbous\Generex\Protocols\CodeGenerator;
+use YassineDabbous\Generex\Protocols\DataHolder;
+use YassineDabbous\Generex\Protocols\StubData;
 use function Laravel\Prompts\info;
 use function Laravel\Prompts\confirm;
 use Illuminate\Filesystem\Filesystem;
@@ -48,7 +48,7 @@ abstract class CodeGeneratorImp implements CodeGenerator
         
         if ( $this->fs->exists($stub->destination) ) {
             // don't overwrite files in single-module mode
-            $isModuleFile = in_array($stub->sourceName, config('packgen.module_files', [
+            $isModuleFile = in_array($stub->sourceName, config('generex.module_files', [
                 'composer', 
                 'ServiceProvider',
             ]));

@@ -1,6 +1,6 @@
 <?php
 
-namespace Yaseen\PackGen\Protocols;
+namespace YassineDabbous\Generex\Protocols;
 
 interface CodeGenerator
 {

@@ -1,11 +1,11 @@
 <?php
 
-namespace Yaseen\PackGen\Commands;
+namespace YassineDabbous\Generex\Commands;
  
 use Illuminate\Console\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Process\Process;
-use Yaseen\PackGen\Protocols\DataHolder;
+use YassineDabbous\Generex\Protocols\DataHolder;
 
 /**
  * Class BaseCommand.
@@ -109,7 +109,7 @@ abstract class BaseCommand extends Command
 
     
     protected function modulesFolder() : string {
-        return config('packgen.root', base_path('modules/'));
+        return config('generex.root', base_path('modules/'));
     }
 
 }

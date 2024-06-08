@@ -1,10 +1,10 @@
 <?php
 
-namespace Yaseen\PackGen\Services;
-use Yaseen\PackGen\Protocols\CodeGenerator;
-use Yaseen\PackGen\Protocols\DataHolder;
-use Yaseen\PackGen\Protocols\TemplateProvider;
-use Yaseen\PackGen\Protocols\StubData;
+namespace YassineDabbous\Generex\Services;
+use YassineDabbous\Generex\Protocols\CodeGenerator;
+use YassineDabbous\Generex\Protocols\DataHolder;
+use YassineDabbous\Generex\Protocols\TemplateProvider;
+use YassineDabbous\Generex\Protocols\StubData;
 
 use function Laravel\Prompts\select;
 
@@ -19,11 +19,11 @@ class TemplateProviderImp implements TemplateProvider
      * Package path.
      */
     protected function packagePath(string $path = '') : string {
-        return config('packgen.root', base_path('modules/')).$this->dataHolder->moduleName.'/'.$path;
+        return config('generex.root', base_path('modules/')).$this->dataHolder->moduleName.'/'.$path;
     }
 
     /**
-     * @return array<\Yaseen\PackGen\Protocols\StubData> 
+     * @return array<\YassineDabbous\Generex\Protocols\StubData> 
     */
     public function stubs() : array {    
         $paths = $this->chooseTemplate();
@@ -38,7 +38,7 @@ class TemplateProviderImp implements TemplateProvider
     }
 
     public function chooseTemplate() : array {
-        $templates = collect( config('packgen.templates', []) );
+        $templates = collect( config('generex.templates', []) );
         if($templates->count() == 0){
             throw new \Exception("Can't proceed without templates !");
         }

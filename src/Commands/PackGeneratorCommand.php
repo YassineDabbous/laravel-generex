@@ -1,22 +1,22 @@
 <?php
 
-namespace Yaseen\PackGen\Commands;
-use Yaseen\PackGen\Protocols\CodeGenerator;
-use Yaseen\PackGen\Protocols\DataHolder;
-use Yaseen\PackGen\Protocols\DataGenerator;
-use Yaseen\PackGen\Protocols\TemplateProvider;
+namespace YassineDabbous\Generex\Commands;
+use YassineDabbous\Generex\Protocols\CodeGenerator;
+use YassineDabbous\Generex\Protocols\DataHolder;
+use YassineDabbous\Generex\Protocols\DataGenerator;
+use YassineDabbous\Generex\Protocols\TemplateProvider;
 
 /**
  * Class FullPackGenerator.
  *
  * @author  Yassine Dabbous <yassine.dabbous@gmail.com>
  */
-class FullPackGenerator extends BaseCommand
+class PackGeneratorCommand extends BaseCommand
 {
     /**
      * The name and signature of the console command.
      */
-    protected $signature = 'pack:gen
+    protected $signature = 'gen:pack
                             {name : Table name}
                             {--vendor= : Vendor name}
                             {--package= : Package name}

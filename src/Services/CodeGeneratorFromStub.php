@@ -1,8 +1,8 @@
 <?php
 
-namespace Yaseen\PackGen\Services;
+namespace YassineDabbous\Generex\Services;
 
-use Yaseen\PackGen\Protocols\StubData;
+use YassineDabbous\Generex\Protocols\StubData;
 
  class CodeGeneratorFromStub extends CodeGeneratorImp
 {

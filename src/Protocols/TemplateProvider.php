@@ -1,13 +1,13 @@
 <?php
 
-namespace Yaseen\PackGen\Protocols;
+namespace YassineDabbous\Generex\Protocols;
 
 interface TemplateProvider
 {
     /**
      * Get templates list.
      * 
-     * @return array<\Yaseen\PackGen\Protocols\StubData> 
+     * @return array<\YassineDabbous\Generex\Protocols\StubData> 
     */
     public function stubs() : array;
 }

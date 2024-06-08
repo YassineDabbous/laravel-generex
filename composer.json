@@ -1,8 +1,9 @@
 {
-    "version": "0.0.1",
-    "name": "yaseen/packgen",
-    "description": "Laravel package generator with CRUD, Validation, Policies, Events, Notifications, API & views",
+    "name": "yassinedabbous/laravel-generex",
+    "description": "Customizable Laravel Code Generator with templates for CRUD, Validation, Policies, Events, Notifications, API & views",
     "type": "library",
+    "license": "MIT",
+    "homepage": "https://github.com/YassineDabbous/laravel-generex",
     "authors": [
         {
             "name": "Yassine Dabbous",
@@ -11,19 +12,20 @@
     ],
     "minimum-stability": "stable",
     "prefer-stable": true,
-    "keywords": ["laravel", "crud", "package crud", "laravel gate policies", "laravel generator", "package generator", "laravel package"],
+    "keywords": ["laravel", "crud", "package crud", "laravel generator", "package generator", "laravel package"],
     "require": {
+        "php": ">=7.4",
         "laravel/framework": "^5.5|^6.0|^7.0|^8.0|^9.0|^10.0|^11.0"
     },
     "autoload": {
         "psr-4": {
-            "Yaseen\\PackGen\\": "src/"
+            "YassineDabbous\\Generex\\": "src/"
         }
     },
     "extra": {
         "laravel": {
             "providers": [
-                "Yaseen\\PackGen\\PackGenServiceProvider"
+                "YassineDabbous\\Generex\\GenerexServiceProvider"
             ]
         }
     }

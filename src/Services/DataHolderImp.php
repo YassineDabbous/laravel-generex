@@ -1,10 +1,10 @@
 <?php
 
-namespace Yaseen\PackGen\Services;
+namespace YassineDabbous\Generex\Services;
 
 use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
-use Yaseen\PackGen\Protocols\DataHolder;
+use YassineDabbous\Generex\Protocols\DataHolder;
 
 class DataHolderImp extends DataHolder
 {
