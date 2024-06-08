@@ -16,7 +16,7 @@ class {{ $o->modelName }}ApiController
      */
     public function index(Request $request)
     {
-        Gate::authorize('index', {{ $o->modelClassName }}::class);
+        // Gate::authorize('index', {{ $o->modelClassName }}::class);
 
         $results = {{ $o->modelClassName }}::paginate();
 
@@ -29,7 +29,7 @@ class {{ $o->modelName }}ApiController
      */
     public function store({{ $o->requestClassName }} $request)
     {
-        Gate::authorize('create', {{ $o->modelClassName }}::class);
+        // Gate::authorize('create', {{ $o->modelClassName }}::class);
 
         $model = {{ $o->modelClassName }}::create($request->validated());
 
@@ -43,7 +43,7 @@ class {{ $o->modelName }}ApiController
     {
         $model = {{ $o->modelClassName }}::findOrFail($id);
         
-        Gate::authorize('show', $model);
+        // Gate::authorize('show', $model);
 
         return response()->json($model);
     }
@@ -56,7 +56,7 @@ class {{ $o->modelName }}ApiController
     {
         $model = {{ $o->modelClassName }}::findOrFail($id);
 
-        Gate::authorize('update', $model);
+        // Gate::authorize('update', $model);
 
         $model->update($request->validated());
 
@@ -70,7 +70,7 @@ class {{ $o->modelName }}ApiController
     {
         $model = {{ $o->modelClassName }}::findOrFail($id);
 
-        Gate::authorize('delete', $model);
+        // Gate::authorize('delete', $model);
 
         $model->delete();
 

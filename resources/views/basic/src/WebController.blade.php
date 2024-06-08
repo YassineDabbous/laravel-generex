@@ -15,24 +15,26 @@ class {{ $o->modelName }}WebController
     
     public function index(Request $request) : View
     {
-        Gate::authorize('index', {{ $o->modelClassName }}::class);
+        // Gate::authorize('index', {{ $o->modelClassName }}::class);
 
         $items = {{ $o->modelClassName }}::paginate();
 
-        return view('{{ $o->packageName }}::index', compact('items'));
+        return view('{{ $o->packageName }}::{{ $o->tableName }}.index', compact('items'));
     }
 
 
     public function create(): View
     {
-        return view('{{ $o->packageName }}::create');
+        // Gate::authorize('create', {{ $o->modelClassName }}::class);
+        
+        return view('{{ $o->packageName }}::{{ $o->tableName }}.create');
     }
 
 
 
     public function store({{ $o->requestClassName }} $request): RedirectResponse
     {
-        Gate::authorize('create', {{ $o->modelClassName }}::class);
+        // Gate::authorize('create', {{ $o->modelClassName }}::class);
 
         $model = {{ $o->modelClassName }}::create($request->validated());
 
@@ -45,9 +47,9 @@ class {{ $o->modelName }}WebController
     {
         $model = {{ $o->modelClassName }}::findOrFail($id);
         
-        Gate::authorize('show', $model);
+        // Gate::authorize('show', $model);
 
-        return view('{{ $o->packageName }}::show', compact('model'));
+        return view('{{ $o->packageName }}::{{ $o->tableName }}.show', compact('model'));
     }
 
 
@@ -56,9 +58,9 @@ class {{ $o->modelName }}WebController
     {
         $model = {{ $o->modelClassName }}::findOrFail($id);
         
-        Gate::authorize('update', $model);
+        // Gate::authorize('update', $model);
 
-        return view('{{ $o->packageName }}::edit', compact('model'));
+        return view('{{ $o->packageName }}::{{ $o->tableName }}.edit', compact('model'));
     }
 
 
@@ -67,7 +69,7 @@ class {{ $o->modelName }}WebController
     {
         $model = {{ $o->modelClassName }}::findOrFail($id);
 
-        Gate::authorize('update', $model);
+        // Gate::authorize('update', $model);
 
         $model->update($request->validated());
 
@@ -80,7 +82,7 @@ class {{ $o->modelName }}WebController
     {
         $model = {{ $o->modelClassName }}::findOrFail($id);
 
-        Gate::authorize('delete', $model);
+        // Gate::authorize('delete', $model);
 
         $model->delete();
 

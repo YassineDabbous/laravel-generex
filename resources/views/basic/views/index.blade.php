@@ -8,7 +8,7 @@
 
 @@foreach($items as $model)    
     <div class="mt-4 max-w-2xl mx-auto bg-white p-6 rounded-lg shadow-lg">
-        @@include('{!!$o->packageName!!}::card', ['model'=>$model])
+        @@include('{!!$o->packageName!!}::{!!$o->tableName!!}.card', ['model'=>$model])
     </div>
 @@endforeach
 

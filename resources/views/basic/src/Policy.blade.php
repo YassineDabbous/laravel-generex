@@ -10,6 +10,14 @@ class {{ $o->policyClassName }}
 {
     use HandlesAuthorization;
 
+    public function index($user) : Response|bool
+    {
+        if( ! $user->can('manage_{{ $o->tableName }}') ){
+            return Response::deny('you are not autorized');
+        }
+        return Response::allow();
+    }
+
     public function create($user) : Response|bool
     {
         if( ! $user->can('manage_{{ $o->tableName }}') ){

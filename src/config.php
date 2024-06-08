@@ -50,7 +50,38 @@ return [
 
     /** templates used to generate your app files */
     'templates' => [
-        'basic' => [
+        'API Only' => [
+            'generex::basic.composer' => 'composer.json',
+            'generex::basic.src.ServiceProvider' => '/src/{{$o->serviceProviderClassName}}.php',
+
+            'generex::basic.src.Model' => '/src/Models/{{$o->modelClassName}}.php',
+            'generex::basic.src.Policy' => '/src/Policies/{{$o->policyClassName}}.php',
+            'generex::basic.src.Request' => '/src/Http/Requests/{{$o->requestClassName}}.php',
+
+            // api
+            'generex::basic.routes.api' => 'routes/{{$o->tableName}}_api.php',
+            'generex::basic.src.ApiController' => '/src/Http/Controllers/{{$o->modelName}}ApiController.php',
+        ],
+        'Web only' => [
+            'generex::basic.composer' => 'composer.json',
+            'generex::basic.src.ServiceProvider' => '/src/{{$o->serviceProviderClassName}}.php',
+
+            'generex::basic.src.Model' => '/src/Models/{{$o->modelClassName}}.php',
+            'generex::basic.src.Policy' => '/src/Policies/{{$o->policyClassName}}.php',
+            'generex::basic.src.Request' => '/src/Http/Requests/{{$o->requestClassName}}.php',
+
+            // web
+            'generex::basic.routes.web' => 'routes/{{$o->tableName}}_web.php',
+            'generex::basic.src.WebController' => '/src/Http/Controllers/{{$o->modelName}}WebController.php',
+            'generex::basic.views.layout' => 'resources/views/layout.blade.php',
+            'generex::basic.views.index' => 'resources/views/{{$o->tableName}}/index.blade.php',
+            'generex::basic.views.create' => 'resources/views/{{$o->tableName}}/create.blade.php',
+            'generex::basic.views.edit' => 'resources/views/{{$o->tableName}}/edit.blade.php',
+            'generex::basic.views.show' => 'resources/views/{{$o->tableName}}/show.blade.php',
+            'generex::basic.views.card' => 'resources/views/{{$o->tableName}}/card.blade.php',
+            'generex::basic.views.form' => 'resources/views/{{$o->tableName}}/form.blade.php',
+        ],
+        'Full Pack' => [
             'generex::basic.composer' => 'composer.json',
             'generex::basic.src.ServiceProvider' => '/src/{{$o->serviceProviderClassName}}.php',
 
@@ -66,14 +97,14 @@ return [
             'generex::basic.routes.web' => 'routes/{{$o->tableName}}_web.php',
             'generex::basic.src.WebController' => '/src/Http/Controllers/{{$o->modelName}}WebController.php',
             'generex::basic.views.layout' => 'resources/views/layout.blade.php',
-            'generex::basic.views.index' => 'resources/views/index.blade.php',
-            'generex::basic.views.create' => 'resources/views/create.blade.php',
-            'generex::basic.views.edit' => 'resources/views/edit.blade.php',
-            'generex::basic.views.show' => 'resources/views/show.blade.php',
-            'generex::basic.views.card' => 'resources/views/card.blade.php',
-            'generex::basic.views.form' => 'resources/views/form.blade.php',
+            'generex::basic.views.index' => 'resources/views/{{$o->tableName}}/index.blade.php',
+            'generex::basic.views.create' => 'resources/views/{{$o->tableName}}/create.blade.php',
+            'generex::basic.views.edit' => 'resources/views/{{$o->tableName}}/edit.blade.php',
+            'generex::basic.views.show' => 'resources/views/{{$o->tableName}}/show.blade.php',
+            'generex::basic.views.card' => 'resources/views/{{$o->tableName}}/card.blade.php',
+            'generex::basic.views.form' => 'resources/views/{{$o->tableName}}/form.blade.php',
         ],
-        'extended' => [
+        'Extended' => [
             'generex::basic.composer' => 'composer.json',
             'generex::basic.routes.api' => 'routes/{{$o->tableName}}_api.php',
             'generex::basic.src.ServiceProvider' => '/src/{{$o->serviceProviderClassName}}.php',
@@ -84,10 +115,10 @@ return [
             'generex::extended.src.HasQueryBuilder' => '/src/Concerns/Has{{$o->modelName}}QueryBuilder.php',
             'generex::extended.src.ApiController' => '/src/Http/Controllers/{{$o->modelName}}ApiController.php',
         ],
-        'plain_stub' => [
-            'generex::plain_stub.composer' => 'composer.json',
-            'generex::plain_stub.src.ServiceProvider' => '/src/{serviceProviderClassName}.php',
-        ],
+        // 'plain_stub' => [ 
+        //     'generex::plain_stub.composer' => 'composer.json',
+        //     'generex::plain_stub.src.ServiceProvider' => '/src/{serviceProviderClassName}.php',
+        // ],
     ],
 
 
