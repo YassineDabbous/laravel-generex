@@ -1,6 +1,7 @@
 <?php
 
 namespace Yaseen\PackGen\Services;
+use Yaseen\PackGen\Protocols\CodeGenerator;
 use Yaseen\PackGen\Protocols\DataHolder;
 use Yaseen\PackGen\Protocols\TemplateProvider;
 use Yaseen\PackGen\Protocols\StubData;
@@ -11,6 +12,7 @@ class TemplateProviderImp implements TemplateProvider
 {
     public function __construct(
         private DataHolder $dataHolder,
+        private CodeGenerator $codeGenerator,
     ){}
 
     /**
@@ -27,7 +29,7 @@ class TemplateProviderImp implements TemplateProvider
         $paths = $this->chooseTemplate();
         $stubs = [];
         foreach ($paths as $source => $destination) {
-            $path = \Blade::render($destination, ['o' => $this->dataHolder ]);
+            $path = $this->codeGenerator->renderPath($destination);
             $path = $this->packagePath($path);
             
             $stubs[] = new StubData(source: $source, destination: $path);

@@ -73,6 +73,19 @@ abstract class DataHolder
         throw new \Exception('Undefined property: '.__CLASS__.'::'.$name);
     }
 
+    
+    public function __fillReplacements()
+    {
+        $reflector = new \ReflectionClass($this);
+        $methods = $reflector->getMethods();
+        // dump($methods);
+        foreach ($methods as $method) {
+            if(!str_starts_with($method->getName(), '__') && $method->getNumberOfRequiredParameters() == 0){
+                $this->{$method->getName()};
+            }
+        }
+    }
+
 
     protected function isSingleModule() : bool {
         return config('packgen.single_module', false);

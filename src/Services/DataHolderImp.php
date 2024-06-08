@@ -72,6 +72,9 @@ class DataHolderImp extends DataHolder
     protected function packageNamespace() : string {
         return Str::studly($this->vendorName).'\\'.$this->moduleName;
     }
+    protected function packageNamespaceForComposer() : string {
+        return Str::studly($this->vendorName).'\\\\'.$this->moduleName;
+    }
 
     
 }

@@ -1,6 +1,7 @@
 <?php
 
-use Yaseen\PackGen\Services\CodeGeneratorImp;
+use Yaseen\PackGen\Services\CodeGeneratorFromBlade;
+use Yaseen\PackGen\Services\CodeGeneratorFromStub;
 use Yaseen\PackGen\Services\DataHolderImp;
 use Yaseen\PackGen\Services\DataGeneratorImp;
 use Yaseen\PackGen\Services\TemplateProviderImp;
@@ -41,7 +42,7 @@ return [
     'template_provider' => TemplateProviderImp::class,
 
     /** CodeGenerator implementation class  */
-    'code_generator' => CodeGeneratorImp::class,
+    'code_generator' => CodeGeneratorFromBlade::class, // CodeGeneratorFromStub::class,
 
     /** CodeGenerator implementation class  */
     'data_generator' => DataGeneratorImp::class,
@@ -82,7 +83,11 @@ return [
 
             'packgen::extended.src.HasQueryBuilder' => '/src/Concerns/Has{{$o->modelName}}QueryBuilder.php',
             'packgen::extended.src.ApiController' => '/src/Http/Controllers/{{$o->modelName}}ApiController.php',
-        ]
+        ],
+        'plain_stub' => [
+            'packgen::plain_stub.composer' => 'composer.json',
+            'packgen::plain_stub.src.ServiceProvider' => '/src/{serviceProviderClassName}.php',
+        ],
     ],
 
 

@@ -10,7 +10,7 @@ use function Laravel\Prompts\confirm;
 use Illuminate\Filesystem\Filesystem;
 use Illuminate\Support\Str;
 
- class CodeGeneratorImp implements CodeGenerator
+abstract class CodeGeneratorImp implements CodeGenerator
 {
     
     public function __construct(
@@ -63,10 +63,15 @@ use Illuminate\Support\Str;
         }
 
         info("Creating $stub->destinationName ...");
-        $output = view($stub->source, ['o' => $this->dataHolder])->render();
-        $this->write($stub->destination, $output);
+
+        $this->write($stub->destination, $this->renderContent($stub));
+
         return true;
     }
+    
+    abstract public function renderContent(StubData $stub) : string;
+
+    abstract public function renderPath(string $path) : string;
 
 
     /**
