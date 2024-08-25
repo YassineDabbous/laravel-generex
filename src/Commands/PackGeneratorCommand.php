@@ -40,12 +40,13 @@ class PackGeneratorCommand extends BaseCommand
         $this->info('Running Package Generator ...');
 
         $tableName = $this->getNameInput();
-        if(!$dataGenerator->validate($tableName)){
-            return false;
-        }
 
         // load "vendor" and "package" names
         $this->buildOptions();
+        
+        if(!$dataGenerator->validate($tableName)){
+            return false;
+        }
 
         // generate model fields
         $dataGenerator->generateFields($tableName);

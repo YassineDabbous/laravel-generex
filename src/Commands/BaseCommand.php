@@ -44,7 +44,7 @@ abstract class BaseCommand extends Command
 
         $connection = $this->option('connection');
         if (! empty($connection)) {
-            $this->dataHolder->connectionName = strtolower($connection);
+            $this->dataHolder->connectionName = $connection;
         }
 
         return $this;

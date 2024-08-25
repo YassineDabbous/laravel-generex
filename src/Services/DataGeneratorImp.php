@@ -29,7 +29,7 @@ use YassineDabbous\Generex\Protocols\DataGenerator;
      * Check if table exist or ask for schema file.
      */
     public function validate($tableName) : bool {
-        $this->tableExists = Schema::hasTable($tableName);
+        $this->tableExists = Schema::connection($this->dataHolder->connectionName)->hasTable($tableName);
         if (! $this->tableExists) {
             warning("`{$tableName}` table doesn't exist");
         }
@@ -102,7 +102,7 @@ use YassineDabbous\Generex\Protocols\DataGenerator;
      */
     protected function generateFieldsFromDb()
     {
-        info("Using fields from table: {$this->dataHolder->tableName}");
+        info("Using fields from table: {$this->dataHolder->connectionName}/{$this->dataHolder->tableName}");
         $tableColumns = Schema::connection($this->dataHolder->connectionName)->getColumns($this->dataHolder->tableName);
         $this->dataHolder->fields = $this->mergeColumnsToFields( $tableColumns );
         return $this;
@@ -146,7 +146,7 @@ use YassineDabbous\Generex\Protocols\DataGenerator;
             $field['inView'] ??= !$hidden;
             $field['inGrid'] ??= !$hidden;
             $field['default'] ??= $column['default'] ?? $default;
-            
+
             // anticipating rules from column info
             $rules = $field['rules'] ?? [];
 
@@ -164,7 +164,7 @@ use YassineDabbous\Generex\Protocols\DataGenerator;
             }
             $field['rules'] = $rules;
             
-            
+
             $fields->push($field);
         }
         return $fields;
