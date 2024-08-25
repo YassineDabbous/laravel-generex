@@ -147,6 +147,9 @@ use YassineDabbous\Generex\Protocols\DataGenerator;
             $field['inGrid'] ??= !$hidden;
             $field['default'] ??= $column['default'] ?? $default;
 
+            $field['nullable'] ??= $column['nullable'] ?? false;
+            $field['comment'] ??= $column['comment'] ?? null;
+            
             // anticipating rules from column info
             $rules = $field['rules'] ?? [];
 
@@ -164,10 +167,41 @@ use YassineDabbous\Generex\Protocols\DataGenerator;
             }
             $field['rules'] = $rules;
             
-
+            $field['migration'] = $this->generateMigrationLine($field);
+            
             $fields->push($field);
         }
         return $fields;
+    }
+
+
+
+
+
+    protected function generateMigrationLine(array $field)
+    {
+        if($field['name'] == 'id'){
+            return '$table->id();';
+        }
+        if($field['name'] == 'deleted_at'){
+            return '$table->softDeletes();';
+        }
+        $migrationText = '$table->';
+        $migrationText .= $field['dbType']."('".$field['name']."')";
+        if(isset($field['nullable']) && $field['nullable']){
+            $migrationText .= '->nullable()';
+        }
+        if(isset($field['default']) && !is_null($field['default'])){
+            $v = is_numeric($field['default']) ? $field['default'] : "'".$field['default']."'";
+            if($v != "'{}'"){ // mysql: json doesn't support default value
+                $migrationText .= "->default($v)";
+            }
+        }
+        if(isset($field['comment'])){
+            $migrationText .= '->comment(\''.$field['comment'].'\')';
+        }
+        $migrationText .= ';';
+        return $migrationText;
     }
 
 }

@@ -51,24 +51,31 @@ return [
     /** templates used to generate your app files */
     'templates' => [
         'API Only' => [
+            // base
             'generex::basic.composer' => 'composer.json',
             'generex::basic.src.ServiceProvider' => '/src/{{$o->serviceProviderClassName}}.php',
 
             'generex::basic.src.Model' => '/src/Models/{{$o->modelClassName}}.php',
             'generex::basic.src.Policy' => '/src/Policies/{{$o->policyClassName}}.php',
             'generex::basic.src.Request' => '/src/Http/Requests/{{$o->requestClassName}}.php',
+            
+            // 'generex::basic.database.migrations' => 'database/migrations/{{date("Y_m_d_His")}}_create_{{$o->tableName}}_table.php',
+            'generex::basic.database.migrations' => 'database/migrations/{{date("Y_m_d_000000")}}_create_{{$o->tableName}}_table.php',
 
             // api
             'generex::basic.routes.api' => 'routes/{{$o->tableName}}_api.php',
             'generex::basic.src.ApiController' => '/src/Http/Controllers/{{$o->modelName}}ApiController.php',
         ],
         'Web only' => [
+            // base
             'generex::basic.composer' => 'composer.json',
             'generex::basic.src.ServiceProvider' => '/src/{{$o->serviceProviderClassName}}.php',
 
             'generex::basic.src.Model' => '/src/Models/{{$o->modelClassName}}.php',
             'generex::basic.src.Policy' => '/src/Policies/{{$o->policyClassName}}.php',
             'generex::basic.src.Request' => '/src/Http/Requests/{{$o->requestClassName}}.php',
+
+            'generex::basic.database.migrations' => 'database/migrations/{{date("Y_m_d_000000")}}_create_{{$o->tableName}}_table.php',
 
             // web
             'generex::basic.routes.web' => 'routes/{{$o->tableName}}_web.php',
@@ -82,12 +89,15 @@ return [
             'generex::basic.views.form' => 'resources/views/{{$o->tableName}}/form.blade.php',
         ],
         'Full Pack' => [
+            // base
             'generex::basic.composer' => 'composer.json',
             'generex::basic.src.ServiceProvider' => '/src/{{$o->serviceProviderClassName}}.php',
 
             'generex::basic.src.Model' => '/src/Models/{{$o->modelClassName}}.php',
             'generex::basic.src.Policy' => '/src/Policies/{{$o->policyClassName}}.php',
             'generex::basic.src.Request' => '/src/Http/Requests/{{$o->requestClassName}}.php',
+
+            'generex::basic.database.migrations' => 'database/migrations/{{date("Y_m_d_000000")}}_create_{{$o->tableName}}_table.php',
 
             // api
             'generex::basic.routes.api' => 'routes/{{$o->tableName}}_api.php',

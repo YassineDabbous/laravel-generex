@@ -76,5 +76,35 @@ class DataHolderImp extends DataHolder
         return Str::studly($this->vendorName).'\\\\'.$this->moduleName;
     }
 
+
+
+    protected function migrationLines() : array {
+        $lines = [];
+        $createdAtField = null;
+        $updatedAtField = null;
+        foreach($this->fields as $field){
+            if($field['name'] == 'created_at'){
+                $createdAtField = $field;
+                continue;
+            }
+            if($field['name'] == 'updated_at'){
+                $updatedAtField = $field;
+                continue;
+            }
+            $lines[] = $field['migration'];
+        }
+        if (($createdAtField['name']??'') === 'created_at' && ($updatedAtField['name']??'') === 'updated_at') {
+            $lines[] = '$table->timestamps();';
+        } else {
+            if ($createdAtField) {
+                $lines[] = $createdAtField['migration'];
+            }
+            if ($updatedAtField) {
+                $lines[] = $updatedAtField['migration'];
+            }
+        }
+        return $lines;
+    }
+
     
 }
