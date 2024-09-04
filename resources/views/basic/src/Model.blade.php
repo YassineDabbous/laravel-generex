@@ -40,5 +40,15 @@ class {{ $o->modelClassName }} extends Model
     @foreach($o->fieldsWithDefaultValues as $field) '{{ $field->name }}' => {!! $field->defaultValue !!}, @endforeach 
     ];
     @endif
+    
+    @if($o->fieldsWithCasts->count()) 
+    protected $casts = [
+    @foreach($o->fieldsWithCasts as $field)
+    '{{ $field->name }}' => '{!! $field->castType !!}',
+    @endforeach 
+    ];
+    @endif
+
+
 
 }

@@ -1,5 +1,6 @@
 <?php
 
+use YassineDabbous\Generex\Field;
 use YassineDabbous\Generex\Services\CodeGeneratorFromBlade;
 use YassineDabbous\Generex\Services\CodeGeneratorFromStub;
 use YassineDabbous\Generex\Services\DataHolderImp;
@@ -135,6 +136,14 @@ return [
     'model' => [
         'defaults' => [
             'meta' => "'{}'",
+        ],
+        
+        'casts' => [
+            "YassineDabbous\\FileCast\\FileCast" => ['cover', 'photo', 'image', 'picture', 'icon'],
+            "Ysn\\SuperCore\\Casts\\Spatial\\LocationCast" => fn(Field $f) => $f->dbType == 'point',
+            'array' => fn(Field $f) => $f->dbType == 'json',
+            'bool' => fn(Field $f) => $f->dbType == 'boolean',
+            'date' => fn(Field $f) => in_array($f->dbType, ['date', 'datetime', 'timestamps']),
         ],
 
         /**

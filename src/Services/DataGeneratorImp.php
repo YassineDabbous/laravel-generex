@@ -195,7 +195,28 @@ use YassineDabbous\Generex\Protocols\DataGenerator;
 
 
 
-
+    protected function generateCast(Field $field): ?string
+    {
+        $casts = config('generex.model.casts', []);
+        foreach ($casts as $cast => $condition) {
+            if (is_array($condition)) {
+                if(in_array($field->name, $condition)){
+                    return $cast;
+                }
+            }
+            if ($condition instanceof \Closure) {
+                if($condition($field)){
+                    return $cast;
+                }
+            }
+            if($field->name == $condition){
+                return $cast;
+            }
+        }
+        
+        return null;
+    }
+    
     protected function generateMigrationLine(Field $field): string
     {
         if($field->name == 'id'){

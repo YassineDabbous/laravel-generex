@@ -48,7 +48,12 @@ class DataHolderImp extends DataHolder
     {
         return $this->fields->where(fn($c) => !is_null($c->defaultValue));
     }
- 
+
+    protected function fieldsWithCasts() : Collection
+    {
+        return $this->fields->where(fn($c) => !is_null($c->castType));
+    }
+
     protected function editableFields() : Collection
     {
         return $this->fields->where(fn($c) => is_null($c->editable) || $c->editable);
