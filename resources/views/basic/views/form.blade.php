@@ -8,15 +8,15 @@
                 @@endif
                 @foreach ($o->editableFields as $field)
                     @php
-                        $field['inputType'] ??= 'text';
+                        $field->inputType ??= 'text';
                     @endphp
 
-                    @if($field['inputType'] == 'textarea')
+                    @if($field->inputType == 'textarea')
 
                     <div class="mb-4">
-                        <label for="{{ $field['name'] }}" class="block text-gray-700">{{ Str::headline($field['name']) }}</label>
-                        <textarea name="{{ $field['name'] }}" id="{{ $field['name'] }}" rows="4" class="w-full mt-2 p-2 border rounded-lg @@error('{{ $field['name'] }}') border-red-500 @@enderror">@{{ old('{!! $field['name'] !!}') ?? $model?->{!! $field['name'] !!} }}</textarea>
-                        @@error('{{ $field['name'] }}')
+                        <label for="{{ $field->name }}" class="block text-gray-700">{{ Str::headline($field->name) }}</label>
+                        <textarea name="{{ $field->name }}" id="{{ $field->name }}" rows="4" class="w-full mt-2 p-2 border rounded-lg @@error('{{ $field->name }}') border-red-500 @@enderror">@{{ old('{!! $field->name !!}') ?? $model?->{!! $field->name !!} }}</textarea>
+                        @@error('{{ $field->name }}')
                             <p class="text-red-500 text-sm mt-2">@{{ $message }}</p>
                         @@enderror
                     </div>
@@ -24,9 +24,9 @@
                     @else
 
                     <div class="mb-4">
-                        <label for="{{ $field['name'] }}" class="block text-gray-700">{{ Str::headline($field['name']) }}</label>
-                        <input type="{{ $field['inputType'] }}" name="{{ $field['name'] }}" id="{{ $field['name'] }}" class="w-full mt-2 p-2 border rounded-lg @@error('{{ $field['name'] }}') border-red-500 @@enderror" value="@{{ old('{!! $field['name'] !!}') ?? $model?->{!! $field['name'] !!} }}">
-                        @@error('{{ $field['name'] }}')
+                        <label for="{{ $field->name }}" class="block text-gray-700">{{ Str::headline($field->name) }}</label>
+                        <input type="{{ $field->inputType }}" name="{{ $field->name }}" id="{{ $field->name }}" class="w-full mt-2 p-2 border rounded-lg @@error('{{ $field->name }}') border-red-500 @@enderror" value="@{{ old('{!! $field->name !!}') ?? $model?->{!! $field->name !!} }}">
+                        @@error('{{ $field->name }}')
                             <p class="text-red-500 text-sm mt-2">@{{ $message }}</p>
                         @@enderror
                     </div>

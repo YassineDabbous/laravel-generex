@@ -1,8 +1,8 @@
 <div >
     @foreach ($o->visibleFields as $field) 
     <div class="mb-4">
-        <label class="block text-gray-700">{{$field['name']}}:</label>
-        <p class="mt-2 p-2 bg-gray-100 rounded-lg">@{{ $model->{!! $field['name'] !!} }}</p>
+        <label class="block text-gray-700">{{$field->name}}:</label>
+        <p class="mt-2 p-2 bg-gray-100 rounded-lg">@{{ $model->{!! $field->name !!} }}</p>
     </div>
     @endforeach 
 

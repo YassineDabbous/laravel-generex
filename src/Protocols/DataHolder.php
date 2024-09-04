@@ -14,7 +14,7 @@ abstract class DataHolder
     /**
      * Model/Table fields.
      *
-     * @var \Illuminate\Support\Collection<array>
+     * @var \Illuminate\Support\Collection<\YassineDabbous\Generex\Field>
      */
     public $fields;
     

@@ -10,7 +10,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 /**
  * Class {{ $o->modelClassName }}
 @foreach($o->fields as $field)
- * @@property ${{ $field['name'] }}
+ * @@property ${{ $field->name }}
 @endforeach
  */
 class {{ $o->modelClassName }} extends Model
@@ -37,7 +37,7 @@ class {{ $o->modelClassName }} extends Model
      * Default Values.
      */
     protected $attributes = [
-    @foreach($o->fieldsWithDefaultValues as $field) '{{ $field['name'] }}' => {!! $field['default'] !!}, @endforeach 
+    @foreach($o->fieldsWithDefaultValues as $field) '{{ $field->name }}' => {!! $field->defaultValue !!}, @endforeach 
     ];
     @endif
 

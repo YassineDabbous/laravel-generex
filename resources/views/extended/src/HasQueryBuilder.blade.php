@@ -11,8 +11,8 @@ trait Has{{ $o->modelName }}QueryBuilder
     public function filter(Builder $q, Request $request) : Builder {
 
 @foreach($o->fields as $field)
-        if($request->filled('{{ $field['name'] }}')){
-            $q->where('{{ $field['name'] }}', $request->{{ $field['name'] }});
+        if($request->filled('{{ $field->name }}')){
+            $q->where('{{ $field->name }}', $request->{{ $field->name }});
         }
 @endforeach
     

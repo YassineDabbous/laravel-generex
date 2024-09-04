@@ -9,8 +9,8 @@ use YassineDabbous\Generex\Protocols\DataHolder;
 class DataHolderImp extends DataHolder
 {
     protected function useSoftDeletes() : bool {
-        foreach ($this->fields as $column) {
-            if ($column['name'] == 'deleted_at') {
+        foreach ($this->fields as $field) {
+            if ($field->name == 'deleted_at') {
                 return true;
             }
         }
@@ -46,17 +46,34 @@ class DataHolderImp extends DataHolder
 
     protected function fieldsWithDefaultValues() : Collection
     {
-        return $this->fields->where(fn($c) => isset($c['default']) && $c['default']);
+        return $this->fields->where(fn($c) => !is_null($c->defaultValue));
     }
-
+ 
     protected function editableFields() : Collection
     {
-        return $this->fields->where(fn($c) => !isset($c['editable']) || $c['editable']);
+        return $this->fields->where(fn($c) => is_null($c->editable) || $c->editable);
+    }
+
+    protected function fieldsWithCreateRules() : Collection
+    {
+        return $this->editableFields
+                    ->where(fn($f) => !in_array($f->name, ['id', 'created_at', 'updated_at']))
+                    ->where(fn($f) => count($f->rules))
+                    ;
+    }
+
+    protected function fieldsWithUpdateRules() : Collection
+    {
+        return $this->editableFields
+                    ->where(fn($f) => !in_array($f->name, ['id', 'created_at', 'updated_at']))
+                    ->where(fn($f) => count($f->rules))
+                    ->where(fn($f) => !(count($f->rules)==1 && $f->rules[0]==='required'))
+                    ;
     }
 
     protected function visibleFields() : Collection
     {
-        return $this->fields->where(fn($c) => !isset($c['inView']) || $c['inView']);
+        return $this->fields->where(fn($c) => is_null($c->inView) || $c->inView);
     }
 
 
@@ -78,29 +95,35 @@ class DataHolderImp extends DataHolder
 
 
 
+    protected function spatialableFields() : Collection
+    {
+        return $this->fields->where(fn($c) => $c->dbType == 'point');
+    }
+
+
     protected function migrationLines() : array {
         $lines = [];
         $createdAtField = null;
         $updatedAtField = null;
         foreach($this->fields as $field){
-            if($field['name'] == 'created_at'){
+            if($field->name == 'created_at'){
                 $createdAtField = $field;
                 continue;
             }
-            if($field['name'] == 'updated_at'){
+            if($field->name == 'updated_at'){
                 $updatedAtField = $field;
                 continue;
             }
-            $lines[] = $field['migration'];
+            $lines[] = $field->migration;
         }
-        if (($createdAtField['name']??'') === 'created_at' && ($updatedAtField['name']??'') === 'updated_at') {
+        if ($createdAtField?->name === 'created_at' && $updatedAtField?->name === 'updated_at') {
             $lines[] = '$table->timestamps();';
         } else {
             if ($createdAtField) {
-                $lines[] = $createdAtField['migration'];
+                $lines[] = $createdAtField->migration;
             }
             if ($updatedAtField) {
-                $lines[] = $updatedAtField['migration'];
+                $lines[] = $updatedAtField->migration;
             }
         }
         return $lines;

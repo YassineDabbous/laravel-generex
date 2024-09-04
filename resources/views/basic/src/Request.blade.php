@@ -20,12 +20,9 @@ class {{ $o->requestClassName }} extends FormRequest
     public function rules(): array
     {
         return [
-    @foreach($o->editableFields as $field)
-        @if(isset($field['rules']))
-        '{{ $field['name'] }}' => [{!! implode(', ', array_map(fn($v) => "'$v'", $field['rules'] )) !!}],
-        @endif
-    @endforeach
-    
+    @foreach($o->fieldsWithCreateRules as $field)
+    '{{ $field->name }}' => [{!! implode(', ', array_map(fn($v) => "'$v'", $field->rules )) !!}],
+    @endforeach     
         ];
     }
 }

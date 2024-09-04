@@ -2,6 +2,7 @@
 
 namespace YassineDabbous\Generex\Services;
 
+use YassineDabbous\Generex\Field;
 use YassineDabbous\Generex\Protocols\DataHolder;
 
 use function Laravel\Prompts\info;
@@ -77,22 +78,27 @@ use YassineDabbous\Generex\Protocols\DataGenerator;
         info("Using fields from schema: {$this->schemaFile}");
         $fileContents = $this->fs->get($this->schemaFile); //file_get_contents($this->schemaFile);
         $jsonData = json_decode($fileContents, true);
-        $fields = $jsonData['fields']; //array_merge_recursive($this->dataHolder->fields, $jsonData['fields']);
-        
-        foreach($fields as &$field) {
-            if(!isset($field['name'])){
+        $fieldsData = $jsonData['fields']; //array_merge_recursive($this->dataHolder->fields, $jsonData['fields']);
+        $fields = collect();
+        foreach($fieldsData as &$data) {
+            if(!isset($data['name'])){
                 throw new \Exception("Some fields doesn't have a name, File: {$this->schemaFile}");
             }
 
-            $unfillable = in_array($field['name'], $this->dataHolder->unfillable);
-            $hidden = in_array($field['name'], $this->dataHolder->hidden);
-            $default = $this->dataHolder->defaults[$field['name']] ?? null;
+            $field = new Field($data['name']);
+
+            $unfillable = in_array($field->name, $this->dataHolder->unfillable);
+            $hidden = in_array($field->name, $this->dataHolder->hidden);
+            $default = $this->dataHolder->defaults[$field->name] ?? null;
             
-            $field['searchable'] ??= !$hidden;
-            $field['editable'] ??= !$unfillable;
-            $field['inView'] ??= !$hidden;
-            $field['inGrid'] ??= !$hidden;
-            $field['default'] ??= $default;
+            $field->searchable = !$hidden;
+            $field->editable = !$unfillable;
+            $field->inView = !$hidden;
+            $field->inGrid = !$hidden;
+            $field->defaultValue = $default;
+            $field->nullable = $data['nullable'] ?? false;
+            $field->comment = $data['comment'] ?? null;
+            $fields->push($field);
         }
         $this->dataHolder->fields = collect($fields);
     }
@@ -113,7 +119,7 @@ use YassineDabbous\Generex\Protocols\DataGenerator;
      * merge local schema with DB table columns
      */
     protected function mergeColumnsToFields(array $tableColumns) : Collection {
-        $fields = collect([]);
+        $fields = collect();
         $dbToHtml = fn($type) => match($type){
             'int', 'tinyint', 'bigint'                  => 'number',
             'char', 'varchar'                           => 'text',
@@ -122,53 +128,65 @@ use YassineDabbous\Generex\Protocols\DataGenerator;
             'date', 'datetime', 'timestamps'            => 'date',
             default => 'text'
         };
-        $dbToCast = fn($type) => match($type){
-            'json'                                      => 'array',
-            'bool'                                      => 'boolean',
-            'date', 'datetime', 'timestamps'            => 'date',
-            default => null
-        };
 
-        foreach ($tableColumns as $column) {
-            $field = ($this->dataHolder->fields ?? collect([]))->firstWhere('name', $column['name'])  ?? [];
-
-            $unfillable = in_array($column['name'], $this->dataHolder->unfillable);
-            $hidden = in_array($column['name'], $this->dataHolder->hidden);
-            $default = $this->dataHolder->defaults[$column['name']] ?? null;
+        foreach ($tableColumns as $data) {
+            $field = ($this->dataHolder->fields ?? collect())->firstWhere(fn($f) => $f->name == $data['name'])  ?? new Field($data['name']);
+    
+            $unfillable = in_array($data['name'], $this->dataHolder->unfillable);
+            $hidden = in_array($data['name'], $this->dataHolder->hidden);
+            $default = $this->dataHolder->defaults[$data['name']] ?? null;
             
             // fill absent keys
-            $field['name'] ??= $column['name'];
-            $field['dbType'] ??= $column['type_name'];
-            $field['inputType'] ??= $dbToHtml($field['dbType']);
-            $field['runtimeType'] ??= $dbToCast($field['dbType']);
-            $field['searchable'] ??= !$hidden;
-            $field['editable'] ??= !$unfillable;
-            $field['inView'] ??= !$hidden;
-            $field['inGrid'] ??= !$hidden;
-            $field['default'] ??= $column['default'] ?? $default;
-
-            $field['nullable'] ??= $column['nullable'] ?? false;
-            $field['comment'] ??= $column['comment'] ?? null;
+            $field->dbType = $data['type_name'];
+            $field->inputType = $dbToHtml($field->dbType);
+            $field->castType = $this->generateCast($field);
+            $field->searchable = !$hidden;
+            $field->editable = !$unfillable;
+            $field->inView = !$hidden;
+            $field->inGrid = !$hidden;
+            $field->defaultValue = $data['default'] ?? $default;
+    
+            $field->nullable = $data['nullable'] ?? false;
+            $field->comment = $data['comment'] ?? null;
             
-            // anticipating rules from column info
-            $rules = $field['rules'] ?? [];
-
-            if (!isset($rules['required']) && !$column['nullable']) {
+            // anticipating rules from data info
+            $rules = $data['rules'] ?? [];
+    
+            if (!$field->nullable && is_null($field->defaultValue)) {
                 $rules[] = 'required';
             }
-            if (!isset($rules['boolean']) && $column['type_name'] == 'bool') {
-                $rules[] = 'boolean';
+            if($field->nullable) {
+                $rules[] = 'nullable';
             }
-            if (!isset($rules['uuid']) && $column['type_name'] == 'uuid') {
-                $rules[] = 'uuid';
+
+            switch ($field->dbType) {
+                case 'uuid':
+                    $rules[] = 'uuid';
+                    break;
+                case 'bool':
+                    $rules[] = 'boolean';
+                    break;
+                case 'tinyint':
+                case 'bigint':
+                case 'int':
+                    $rules[] = 'integer';
+                    break;
+                case 'float':
+                case 'double':
+                case 'decimal':
+                    $rules[] = 'numeric';
+                    break;
+                case 'varchar':
+                case 'text':
+                    if(!isset($rules['uuid'])){
+                        $rules[] = 'string';
+                    }
             }
-            if (!isset($rules['uuid']) && ($column['type_name'] == 'text' || $column['type_name'] == 'varchar')) {
-                $rules[] = 'string';
-            }
-            $field['rules'] = $rules;
             
-            $field['migration'] = $this->generateMigrationLine($field);
+            $field->rules = array_unique($rules);
             
+            $field->migration = $this->generateMigrationLine($field);
+
             $fields->push($field);
         }
         return $fields;
@@ -178,27 +196,36 @@ use YassineDabbous\Generex\Protocols\DataGenerator;
 
 
 
-    protected function generateMigrationLine(array $field)
+    protected function generateMigrationLine(Field $field): string
     {
-        if($field['name'] == 'id'){
+        if($field->name == 'id'){
             return '$table->id();';
         }
-        if($field['name'] == 'deleted_at'){
+        if($field->name == 'deleted_at'){
             return '$table->softDeletes();';
         }
         $migrationText = '$table->';
-        $migrationText .= $field['dbType']."('".$field['name']."')";
-        if(isset($field['nullable']) && $field['nullable']){
+
+        switch ($field->dbType) {
+            case 'varchar': $migrationText .= "string('{$field->name}')"; break;
+            case 'bigint': $migrationText .= "bigInteger('{$field->name}')"; break;
+            case 'tinyint': $migrationText .= "tinyInteger('{$field->name}')"; break;
+            default: $migrationText .= "{$field->dbType}('{$field->name}')"; break;
+        }
+        
+
+        if($field->nullable){
             $migrationText .= '->nullable()';
         }
-        if(isset($field['default']) && !is_null($field['default'])){
-            $v = is_numeric($field['default']) ? $field['default'] : "'".$field['default']."'";
+        if(!is_null($field->defaultValue)){
+            $v = trim($field->defaultValue,"' \n\r\t\v\x00");
+            $v = is_numeric($v) ? $v : "'".$v."'";
             if($v != "'{}'"){ // mysql: json doesn't support default value
                 $migrationText .= "->default($v)";
             }
         }
-        if(isset($field['comment'])){
-            $migrationText .= '->comment(\''.$field['comment'].'\')';
+        if($field->comment){
+            $migrationText .= '->comment(\''.$field->comment.'\')';
         }
         $migrationText .= ';';
         return $migrationText;
