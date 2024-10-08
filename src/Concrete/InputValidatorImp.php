@@ -3,25 +3,24 @@
 namespace YassineDabbous\Generex\Concrete;
 
 use Illuminate\Console\Command;
-use YassineDabbous\Generex\Protocols\DataHolder;
-use YassineDabbous\Generex\Protocols\InputValidator;
+use YassineDabbous\Generex\Abstracts\InputValidator;
 
-class InputValidatorImp implements InputValidator
+class InputValidatorImp extends InputValidator
 {
-    
-    public ?DataHolder $dataHolder = null;
-    
-    public function initialize(DataHolder $dataHolder): void{
-        $this->dataHolder = $dataHolder;
-    }
+
+    /** Command Signature without the name. */
+    protected $signature = '{table : Table name}
+                            {--vendor= : Vendor name}
+                            {--package= : Package name}
+                            {--connection= : Connection name}';
 
 
-    /**
-     * Gathering inputs.
-     */
+
+
+    /** Gathering inputs. */
     public function handle(Command $command) : bool
     {
-        $this->dataHolder->tableName = trim($command->argument('name'));
+        $this->dataHolder->tableName = trim($command->argument('table'));
 
         $vendor = $command->option('vendor');
         if (! empty($vendor)) {
@@ -40,6 +39,5 @@ class InputValidatorImp implements InputValidator
 
         return true;
     }
-
 
 }

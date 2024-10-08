@@ -1,0 +1,87 @@
+<?php
+
+namespace YassineDabbous\Generex\Commands;
+use Illuminate\Console\Parser;
+use YassineDabbous\Generex\Protocols\TemplateProvider;
+use Illuminate\Console\Command;
+use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Output\OutputInterface;
+
+/**
+ * Class GenerexCommand.
+ *
+ * @author  Yassine Dabbous <yassine.dabbous@gmail.com>
+ */
+class GenerexCommand extends Command
+{
+    protected $signature = 'generex {--template= : Template name}';
+    protected $aliases = ['gen'];
+
+    /**
+     * The console command description.
+     */
+    protected $description = 'Generate a laravel package from templates.';
+    
+
+    /** Set signature from selected template. */
+    protected function initialize(InputInterface $input, OutputInterface $output)
+    {
+        $templateProvider = app(TemplateProvider::class);
+
+        $templateProvider->prepare($this->option('template'));
+        $this->signature  .= " {$templateProvider->getSignature()}";
+
+        $this->ignoreValidationErrors = false;
+        $this->reparseSignature();
+        $input->bind($this->getDefinition());
+        $this->input->validate();
+    }
+
+    
+    protected function configure() {
+        $this->ignoreValidationErrors();
+    }
+
+
+
+    
+    /** Reparse template signature to add more arguments and options. */
+    protected function reparseSignature()
+    {
+        [$name, $arguments, $options] = Parser::parse($this->signature);
+        
+        foreach($arguments as $argument) {
+            if(!$this->hasArgument($argument->getName())) {
+                $this->getDefinition()->addArgument($argument);
+            }
+        }
+        foreach($options as $option) {
+            if(!$this->hasOption($option->getName())) {
+                $this->getDefinition()->addOption($option);
+            }
+        }
+    }
+
+    
+    
+    public function handle(TemplateProvider $templateProvider) : bool|null
+    {
+        $this->info('Running Package Generator ...');
+
+        // get cmd input
+        $templateProvider->validateInput($this);
+
+
+        // before generating files
+        $templateProvider->preGenerating();
+
+        // generate files
+        $templateProvider->generate();
+        
+        // after generating files
+        $templateProvider->postGenerating();
+
+        return true;
+    }
+
+}

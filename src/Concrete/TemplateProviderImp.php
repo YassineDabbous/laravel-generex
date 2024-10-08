@@ -32,6 +32,7 @@ class TemplateProviderImp implements TemplateProvider
 
     public function prepare(?string $template) {
         $this->template = $this->chooseTemplate($template);
+
         $dataHolderClass = $this->template['data_holder'] ?? null;
         $this->dataHolder = $dataHolderClass ? new $dataHolderClass() : $this->dataHolder;
 
@@ -96,6 +97,9 @@ class TemplateProviderImp implements TemplateProvider
     //
     //
 
+    public function getSignature(): string {
+        return $this->inputValidator->signature();
+    }
     
     public function validateInput(Command $command) {
         $this->inputValidator->handle($command);
