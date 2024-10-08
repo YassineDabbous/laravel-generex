@@ -1,13 +1,19 @@
 <?php
 
 namespace YassineDabbous\Generex\Protocols;
+use Illuminate\Console\Command;
 
 interface TemplateProvider
 {
-    /**
-     * Get templates list.
-     * 
-     * @return array<\YassineDabbous\Generex\Protocols\StubData> 
-    */
-    public function stubs() : array;
+
+    /** prepare template */
+    public function prepare(?string $template);
+
+    public function validateInput(Command $command);
+
+    public function preGenerating();
+
+    public function generate();
+
+    public function postGenerating();
 }

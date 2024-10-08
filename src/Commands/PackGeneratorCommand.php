@@ -1,23 +1,22 @@
 <?php
 
 namespace YassineDabbous\Generex\Commands;
-use YassineDabbous\Generex\Protocols\CodeGenerator;
-use YassineDabbous\Generex\Protocols\DataHolder;
-use YassineDabbous\Generex\Protocols\DataGenerator;
 use YassineDabbous\Generex\Protocols\TemplateProvider;
+use Illuminate\Console\Command;
 
 /**
- * Class FullPackGenerator.
+ * Class PackGeneratorCommand.
  *
  * @author  Yassine Dabbous <yassine.dabbous@gmail.com>
  */
-class PackGeneratorCommand extends BaseCommand
+class PackGeneratorCommand extends Command
 {
     /**
      * The name and signature of the console command.
      */
     protected $signature = 'gen:pack
                             {name : Table name}
+                            {--template= : Template name}
                             {--vendor= : Vendor name}
                             {--package= : Package name}
                             {--connection= : Connection name}
@@ -28,47 +27,29 @@ class PackGeneratorCommand extends BaseCommand
      */
     protected $description = 'Generate a laravel package with WEB & API CRUD operations';
 
-    public function __construct(
-        DataHolder $dataHolder
-    ){
-        parent::__construct();
-        $this->dataHolder = $dataHolder;
-    }
-
-    public function handle(CodeGenerator $codeGenerator, DataGenerator $dataGenerator, TemplateProvider $templateProvider) : bool|null
+    
+    
+    public function handle(TemplateProvider $templateProvider) : bool|null
     {
         $this->info('Running Package Generator ...');
 
-        $tableName = $this->getNameInput();
+        // choose template        
+        $templateProvider->prepare($this->option('template'));
 
-        // load "vendor" and "package" names
-        $this->buildOptions();
+        // get cmd input
+        $templateProvider->validateInput($this);
+
+
+        // before generating files
+        $templateProvider->preGenerating();
+
+        // generate files
+        $templateProvider->generate();
         
-        if(!$dataGenerator->validate($tableName)){
-            return false;
-        }
-
-        // generate model fields
-        $dataGenerator->generateFields($tableName);
-
-        // generate code
-        foreach($templateProvider->stubs() as $stub){
-            $codeGenerator->handle($stub);
-        }
-
-        if($this->dataHolder->isSingleModule){
-            $this->info('In Single Module mode, files such as "ServiceProvider" won\'t be automatically recreated and may need to be updated manually.');
-        }
-
-        if($this->ask('Package created successfully. \n Would you like to install it (y/n)?', 'n') != 'y'){
-            return true;
-        }
-
-        // adding local repository to composer.json
-        $this->addPathRepository();
-
-        $this->installPackage();
+        // after generating files
+        $templateProvider->postGenerating();
 
         return true;
     }
+
 }
