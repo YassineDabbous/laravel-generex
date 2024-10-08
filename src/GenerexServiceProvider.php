@@ -7,12 +7,12 @@ use Illuminate\Support\ServiceProvider;
 use YassineDabbous\Generex\Commands\PackGeneratorCommand;
 use YassineDabbous\Generex\Protocols\CodeGenerator;
 use YassineDabbous\Generex\Protocols\DataHolder;
-use YassineDabbous\Generex\Services\CodeGeneratorImp;
-use YassineDabbous\Generex\Services\DataHolderImp;
+use YassineDabbous\Generex\Concrete\CodeGeneratorImp;
+use YassineDabbous\Generex\Concrete\DataHolderImp;
 use YassineDabbous\Generex\Protocols\DataGenerator;
 use YassineDabbous\Generex\Protocols\TemplateProvider;
-use YassineDabbous\Generex\Services\DataGeneratorImp;
-use YassineDabbous\Generex\Services\TemplateProviderImp;
+use YassineDabbous\Generex\Concrete\DataGeneratorImp;
+use YassineDabbous\Generex\Concrete\TemplateProviderImp;
 
 class GenerexServiceProvider extends ServiceProvider
 {

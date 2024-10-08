@@ -1,6 +1,6 @@
 <?php
 
-namespace YassineDabbous\Generex\Services;
+namespace YassineDabbous\Generex\Concrete;
 
 use YassineDabbous\Generex\Protocols\CodeGenerator;
 use YassineDabbous\Generex\Protocols\DataHolder;

@@ -1,6 +1,6 @@
 <?php
 
-namespace YassineDabbous\Generex\Services;
+namespace YassineDabbous\Generex\Concrete;
 
 use Illuminate\Support\Collection;
 use Illuminate\Support\Str;

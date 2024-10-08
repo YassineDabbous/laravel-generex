@@ -1,11 +1,11 @@
 <?php
 
 use YassineDabbous\Generex\Field;
-use YassineDabbous\Generex\Services\CodeGeneratorFromBlade;
-use YassineDabbous\Generex\Services\CodeGeneratorFromStub;
-use YassineDabbous\Generex\Services\DataHolderImp;
-use YassineDabbous\Generex\Services\DataGeneratorImp;
-use YassineDabbous\Generex\Services\TemplateProviderImp;
+use YassineDabbous\Generex\Concrete\CodeGeneratorFromBlade;
+use YassineDabbous\Generex\Concrete\CodeGeneratorFromStub;
+use YassineDabbous\Generex\Concrete\DataHolderImp;
+use YassineDabbous\Generex\Concrete\DataGeneratorImp;
+use YassineDabbous\Generex\Concrete\TemplateProviderImp;
 
 return [
 
