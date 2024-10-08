@@ -5,6 +5,7 @@ namespace YassineDabbous\Generex;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\ServiceProvider;
 use YassineDabbous\Generex\Commands\PackGeneratorCommand;
+use YassineDabbous\Generex\Commands\GenerexCommand;
 use YassineDabbous\Generex\Protocols\CodeGenerator;
 use YassineDabbous\Generex\Protocols\DataHolder;
 use YassineDabbous\Generex\Protocols\InputValidator;
@@ -23,6 +24,7 @@ class GenerexServiceProvider extends ServiceProvider
         if ($this->app->runningInConsole()) {
             $this->commands([
                 PackGeneratorCommand::class,
+                GenerexCommand::class,
             ]);
 
             $this->mergeConfigFrom(__DIR__.'/config.php', 'generex');

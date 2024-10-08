@@ -9,6 +9,8 @@ interface TemplateProvider
     /** prepare template */
     public function prepare(?string $template);
 
+    public function getSignature(): string;
+
     public function validateInput(Command $command);
 
     public function preGenerating();
