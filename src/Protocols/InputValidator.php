@@ -1,12 +1,13 @@
 <?php
 
 namespace YassineDabbous\Generex\Protocols;
+use Illuminate\Console\Command;
 
-interface CodeGenerator
+interface InputValidator
 {
     /** Initialize generator with data holder. */
     public function initialize(DataHolder $dataHolder);
 
-    /** Handle files generating from stubs */
-    public function handle(array $stubs) : bool;
+    /** Get data from console args */
+    public function handle(Command $command) : bool;
 }

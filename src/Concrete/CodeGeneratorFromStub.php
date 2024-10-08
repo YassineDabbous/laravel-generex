@@ -2,7 +2,8 @@
 
 namespace YassineDabbous\Generex\Concrete;
 
-use YassineDabbous\Generex\Protocols\StubData;
+use YassineDabbous\Generex\Abstracts\CodeGeneratorImp;
+use YassineDabbous\Generex\Helpers\StubData;
 
  class CodeGeneratorFromStub extends CodeGeneratorImp
 {

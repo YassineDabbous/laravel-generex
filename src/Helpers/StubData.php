@@ -1,6 +1,6 @@
 <?php
 
-namespace YassineDabbous\Generex\Protocols;
+namespace YassineDabbous\Generex\Helpers;
 
 /** StubData class */
  class StubData
