@@ -5,7 +5,6 @@ use YassineDabbous\Generex\Concrete\CodeGeneratorFromBlade;
 use YassineDabbous\Generex\Concrete\CodeGeneratorFromStub;
 use YassineDabbous\Generex\Concrete\DataHolderImp;
 use YassineDabbous\Generex\Concrete\DataGeneratorImp;
-use YassineDabbous\Generex\Concrete\DynamicInputValidator;
 use YassineDabbous\Generex\Concrete\InputValidatorImp;
 use YassineDabbous\Generex\Concrete\TemplateProviderImp;
 
@@ -38,7 +37,7 @@ return [
     'template_provider' => TemplateProviderImp::class,
 
     /** Default Input Validator */
-    'input_validator' => DynamicInputValidator::class,
+    'input_validator' => InputValidatorImp::class,
 
     /** Default code generator */
     'code_generator' => CodeGeneratorFromBlade::class, // CodeGeneratorFromStub::class,
@@ -133,9 +132,6 @@ return [
             ],
         ],
         'plain_stub' => [ 
-            'data_holder' => DataHolderImp::class,
-            'input_validator' => DynamicInputValidator::class,
-            'data_generator' => DataGeneratorImp::class,
             'code_generator' => CodeGeneratorFromStub::class,
             'stubs'     => [
                 'generex::plain_stub.composer' => 'composer.json',
