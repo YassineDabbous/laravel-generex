@@ -1,10 +1,10 @@
 <?php
 
-namespace YassineDabbous\Generex\Services;
+namespace YassineDabbous\Generex\Abstracts;
 
 use YassineDabbous\Generex\Protocols\CodeGenerator;
 use YassineDabbous\Generex\Protocols\DataHolder;
-use YassineDabbous\Generex\Protocols\StubData;
+use YassineDabbous\Generex\Helpers\StubData;
 use function Laravel\Prompts\info;
 use function Laravel\Prompts\confirm;
 use Illuminate\Filesystem\Filesystem;
@@ -13,21 +13,37 @@ use Illuminate\Support\Str;
 abstract class CodeGeneratorImp implements CodeGenerator
 {
     
-    public function __construct(
-        public DataHolder $dataHolder,
-        public Filesystem $fs,
-    ){}
+    public ?DataHolder $dataHolder = null;
+    public Filesystem $fs;
+    
+    public function __construct(){
+        $this->fs =  app(Filesystem::class);
+    }
+
+    
+    public function initialize(DataHolder $dataHolder): void{
+        $this->dataHolder = $dataHolder;
+    }
+
+
     
     /**
      * Handle file generation
      */
-    public function handle(StubData $stub) : bool
+    public function handle(array $stubs) : bool
     {
-        $method = 'generate'.Str::studly($stub->sourceName);
-        if(method_exists($this, $method)){
-            return $this->{$method}($stub);
+        $stubs = $this->stubs($stubs);
+        /** @var StubData $stub */
+        foreach ($stubs as $stub) {
+            $method = 'generate'.Str::studly($stub->sourceName);
+            if(method_exists($this, $method)){
+                return $this->{$method}($stub);
+            }
+            if(!$this->generate($stub)){
+                return false;
+            }
         }
-        return $this->generate($stub);
+        return true;
     }
 
     // /** Example of custom generation by template name (for ServiceProvider). */
@@ -69,11 +85,20 @@ abstract class CodeGeneratorImp implements CodeGenerator
         return true;
     }
     
-    abstract public function renderContent(StubData $stub) : string;
 
+
+    /** 
+     * Render destination path.
+     * Ex: /src/{Model}.php => /src/Post.php
+     */
     abstract public function renderPath(string $path) : string;
 
+    /** render stub content */
+    abstract public function renderContent(StubData $stub) : string;
 
+
+
+    
     /**
      * Write the contents of a file.
      */
@@ -86,6 +111,32 @@ abstract class CodeGeneratorImp implements CodeGenerator
         }
 
         $this->fs->put($path, $content);
+    }
+
+
+    
+    
+    /**
+     * Get templates list.
+     * 
+     * @return array<\YassineDabbous\Generex\Protocols\StubData> 
+    */
+    public function stubs($paths) : array {
+        // $paths = $this->template['stubs'];
+        $stubs = [];
+        foreach ($paths as $source => $destination) {
+            $path = $this->renderPath($destination);
+            $path = $this->packagePath($path);
+            
+            $stubs[] = new StubData(source: $source, destination: $path);
+        }
+        return $stubs;
+    }
+    
+
+    /** Get local package path from config. */
+    protected function packagePath(string $path = '') : string {
+        return config('generex.root', base_path('modules/')).$this->dataHolder->moduleName.'/'.$path;
     }
 
 }

@@ -4,14 +4,9 @@ namespace YassineDabbous\Generex\Protocols;
 
  interface DataGenerator
 {
-    
-    /**
-     * Check if table exist or ask for schema file.
-     */
-    public function validate($tableName) : bool;
-    
-    /**
-     * Generate fields.
-     */
-    public function generateFields($tableName);
+    /** Initialize generator with data holder. */
+    public function initialize(DataHolder $dataHolder);
+
+    /** Handle generating data for templates. */
+    public function handle() : bool;
 }

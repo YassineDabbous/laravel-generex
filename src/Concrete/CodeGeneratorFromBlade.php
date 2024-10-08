@@ -1,8 +1,9 @@
 <?php
 
-namespace YassineDabbous\Generex\Services;
+namespace YassineDabbous\Generex\Concrete;
+use YassineDabbous\Generex\Abstracts\CodeGeneratorImp;
+use YassineDabbous\Generex\Helpers\StubData;
 
-use YassineDabbous\Generex\Protocols\StubData;
 
  class CodeGeneratorFromBlade extends CodeGeneratorImp
 {

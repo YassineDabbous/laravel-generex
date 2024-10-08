@@ -1,6 +1,6 @@
 <?php
 
-namespace YassineDabbous\Generex;
+namespace YassineDabbous\Generex\Helpers;
 
 class Field
 { 

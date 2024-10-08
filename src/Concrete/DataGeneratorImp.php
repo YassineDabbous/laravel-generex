@@ -1,8 +1,8 @@
 <?php
 
-namespace YassineDabbous\Generex\Services;
+namespace YassineDabbous\Generex\Concrete;
 
-use YassineDabbous\Generex\Field;
+use YassineDabbous\Generex\Helpers\Field;
 use YassineDabbous\Generex\Protocols\DataHolder;
 
 use function Laravel\Prompts\info;
@@ -15,21 +15,39 @@ use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Schema;
 use YassineDabbous\Generex\Protocols\DataGenerator;
 
- class DataGeneratorImp implements DataGenerator
+class DataGeneratorImp implements DataGenerator
 {
+    protected ?DataHolder $dataHolder;
+    protected Filesystem $fs;
+    public ?string $schemaFile = null;
+    public bool $tableExists = false;
 
-    public function __construct(
-        protected DataHolder $dataHolder,
-        protected Filesystem $fs,
-        public ?string $schemaFile = null,
-        public bool $tableExists = false,
-    ){}
+
+    public function __construct(){
+        $this->fs =  app(Filesystem::class);
+    }
+
+
+    public function initialize(DataHolder $dataHolder): void{
+        $this->dataHolder = $dataHolder;
+    }
+
+
+    public function handle() : bool {
+        if(!$this->validate()){
+            return false;
+        }
+
+        // generate model fields
+        $this->generateFields();
+        return true;
+    }
+
     
     
-    /**
-     * Check if table exist or ask for schema file.
-     */
-    public function validate($tableName) : bool {
+    /** Check if table exist or ask for schema file. */
+    public function validate() : bool {
+        $tableName = $this->dataHolder->tableName;
         $this->tableExists = Schema::connection($this->dataHolder->connectionName)->hasTable($tableName);
         if (! $this->tableExists) {
             warning("`{$tableName}` table doesn't exist");
@@ -49,6 +67,9 @@ use YassineDabbous\Generex\Protocols\DataGenerator;
 
         return true;
     }
+
+
+    
     
     
     protected function schemaFolder() : string {
@@ -56,12 +77,9 @@ use YassineDabbous\Generex\Protocols\DataGenerator;
     }
     
  
-    /**
-     * Generate Model fields.
-     */
-    public function generateFields($tableName)
+    /** Generate Model fields. */
+    public function generateFields()
     {
-        $this->dataHolder->tableName = $tableName;
         if($this->schemaFile){
             $this->generateFieldsFromSchema();
         }
@@ -70,9 +88,7 @@ use YassineDabbous\Generex\Protocols\DataGenerator;
         }
     }
 
-    /**
-     * Generate Model fields from schema file.
-     */
+    /** Generate Model fields from schema file. */
     protected function generateFieldsFromSchema()
     {
         info("Using fields from schema: {$this->schemaFile}");
@@ -103,9 +119,7 @@ use YassineDabbous\Generex\Protocols\DataGenerator;
         $this->dataHolder->fields = collect($fields);
     }
     
-    /**
-     * Generate Model fields from db table.
-     */
+    /** Generate Model fields from db table. */
     protected function generateFieldsFromDb()
     {
         info("Using fields from table: {$this->dataHolder->connectionName}/{$this->dataHolder->tableName}");
@@ -115,9 +129,7 @@ use YassineDabbous\Generex\Protocols\DataGenerator;
     }
 
 
-    /**
-     * merge local schema with DB table columns
-     */
+    /** Merge local schema with DB table columns. */
     protected function mergeColumnsToFields(array $tableColumns) : Collection {
         $fields = collect();
         $dbToHtml = fn($type) => match($type){
@@ -227,12 +239,12 @@ use YassineDabbous\Generex\Protocols\DataGenerator;
         }
         $migrationText = '$table->';
 
-        switch ($field->dbType) {
-            case 'varchar': $migrationText .= "string('{$field->name}')"; break;
-            case 'bigint': $migrationText .= "bigInteger('{$field->name}')"; break;
-            case 'tinyint': $migrationText .= "tinyInteger('{$field->name}')"; break;
-            default: $migrationText .= "{$field->dbType}('{$field->name}')"; break;
-        }
+        $migrationText .= match ($field->dbType) {
+          'varchar' => "string('{$field->name}')",
+          'bigint' => "bigInteger('{$field->name}')",
+          'tinyint' => "tinyInteger('{$field->name}')",
+          default => "{$field->dbType}('{$field->name}')",
+        };
         
 
         if($field->nullable){

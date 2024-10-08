@@ -1,6 +1,6 @@
 <?php
 
-namespace YassineDabbous\Generex\Services;
+namespace YassineDabbous\Generex\Concrete;
 
 use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
@@ -8,15 +8,6 @@ use YassineDabbous\Generex\Protocols\DataHolder;
 
 class DataHolderImp extends DataHolder
 {
-    protected function useSoftDeletes() : bool {
-        foreach ($this->fields as $field) {
-            if ($field->name == 'deleted_at') {
-                return true;
-            }
-        }
-        return false;
-    }
-
     protected function modelName() : string {
         return Str::studly(Str::singular($this->tableName));
     }
@@ -42,7 +33,14 @@ class DataHolderImp extends DataHolder
         return "{$this->modelName}Request";
     }
 
-
+    protected function useSoftDeletes() : bool {
+        foreach ($this->fields as $field) {
+            if ($field->name == 'deleted_at') {
+                return true;
+            }
+        }
+        return false;
+    }
 
     protected function fieldsWithDefaultValues() : Collection
     {
@@ -88,9 +86,7 @@ class DataHolderImp extends DataHolder
 
 
 
-    /**
-     * Package Namespace.
-     */
+    /** Package Namespace. */
     protected function packageNamespace() : string {
         return Str::studly($this->vendorName).'\\'.$this->moduleName;
     }
