@@ -3,7 +3,9 @@
 namespace YassineDabbous\Generex\Concrete;
 
 use Illuminate\Console\Command; 
+use YassineDabbous\Generex\Generex;
 use YassineDabbous\Generex\Helpers\HasLocalPackageInstaller;
+use YassineDabbous\Generex\Helpers\Template;
 use YassineDabbous\Generex\Protocols\CodeGenerator;
 use YassineDabbous\Generex\Protocols\DataGenerator;
 use YassineDabbous\Generex\Protocols\DataHolder;
@@ -19,7 +21,7 @@ class TemplateProviderImp implements TemplateProvider
 {
     use HasLocalPackageInstaller;
 
-    private array $template;
+    private Template $template;
 
     public function __construct(
         private DataHolder $dataHolder,
@@ -33,41 +35,44 @@ class TemplateProviderImp implements TemplateProvider
     public function prepare(?string $template) {
         $this->template = $this->chooseTemplate($template);
 
-        $dataHolderClass = $this->template['data_holder'] ?? null;
+        $dataHolderClass = $this->template->dataHolder;
         $this->dataHolder = $dataHolderClass ? new $dataHolderClass() : $this->dataHolder;
 
-        $codeGeneratorClass = $this->template['code_generator'] ?? null;
+        $codeGeneratorClass = $this->template->codeGenerator;
         $this->codeGenerator = $codeGeneratorClass ? new $codeGeneratorClass() : $this->codeGenerator;
         $this->codeGenerator->initialize($this->dataHolder);
 
-        $dataGeneratorClass = $this->template['data_generator'] ?? null;
+        $dataGeneratorClass = $this->template->dataGenerator;
         $this->dataGenerator = $dataGeneratorClass ? new $dataGeneratorClass() : $this->dataGenerator;
         $this->dataGenerator->initialize($this->dataHolder);
 
-        $inputValidatorClass = $this->template['input_validator'] ?? null;
+        $inputValidatorClass = $this->template->inputValidator;
         $this->inputValidator = $inputValidatorClass ? new $inputValidatorClass() : $this->inputValidator;
         $this->inputValidator->initialize($this->dataHolder);
     }
 
-    public function chooseTemplate(?string $template) : array {
-        $templates = collect( config('generex.templates', []) );
+    public function chooseTemplate(?string $name) : Template {
+        $templates = app(Generex::class)->getTemplates();
         if($templates->count() == 0){
             throw new \Exception("Can't proceed without templates !");
         }
-        if($template){
-            if($templates->has($template)){
-                return $templates->get($template);
+        if($name){
+            if($template = $templates->first(fn($t, $key) => $t->name == $name)){
+                info("Using template: $name");
+                return $template;
             }
-            error("Provided template ($template) doesn't exist.");
+            error("Provided template ($name) doesn't exist.");
         }
         if( $templates->count() == 1 ){
-            return $templates->first();
+            $template = $templates->first();
+            info("Using default template ({$template->name}).");
+            return $template;
         }
-        $template = select(
+        $name = select(
             'Choose a template:',
-            $templates->keys(),
+            $templates->pluck('name'),
         );
-        return $templates->get($template);
+        return $templates->first(fn($t, $key) => $t->name == $name);
     }
 
 
@@ -162,7 +167,7 @@ class TemplateProviderImp implements TemplateProvider
     //
         
     public function generate(){
-        $this->codeGenerator->handle($this->template['stubs']);
+        $this->codeGenerator->handle($this->template->stubs);
     }
     
     //

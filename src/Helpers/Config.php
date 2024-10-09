@@ -29,4 +29,15 @@ class Config
         }, array_keys($templates), $templates);
     }
 
+    /** Add a new template to the configuration. */
+    public function addTemplate(string $name, array $templateDetails): void
+    {
+        $this->templates[$name] = new Template($name, $templateDetails);
+    }
+
+    /** Remove an existing template by name. */
+    public function removeTemplate(string $name): void
+    {
+        unset($this->templates[$name]);
+    }
 }

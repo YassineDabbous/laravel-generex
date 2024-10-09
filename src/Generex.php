@@ -20,6 +20,26 @@ class Generex
         return new Config($configArray);
     }
 
+    /** Add a new template programmatically. */
+    public function addTemplate(string $name, array $stubs, ?string $dataHolder = null, ?string $inputValidator = null, ?string $dataGenerator = null, ?string $codeGenerator = null): void
+    {
+        $templateDetails = [
+            'stubs' => $stubs,
+            'data_holder' => $dataHolder,
+            'input_validator' => $inputValidator,
+            'data_generator' => $dataGenerator,
+            'code_generator' => $codeGenerator,
+        ];
+
+        $this->config->addTemplate($name, $templateDetails);
+    }
+
+    /** Remove an existing template by name. */
+    public function removeTemplate(string $name): void
+    {
+        $this->config->removeTemplate($name);
+    }
+
     /**
      * Get all templates to verify or manage them.
      * 
