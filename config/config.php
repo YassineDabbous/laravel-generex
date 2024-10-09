@@ -30,11 +30,11 @@ return [
         'package' => null,
     ],
 
-    /** Default data holder class */
-    'data_holder' => DataHolderImp::class,
-
     /** Default Template Provider */
     'template_provider' => TemplateProviderImp::class,
+
+    /** Default data holder class */
+    'data_holder' => DataHolderImp::class,
 
     /** Default Input Validator */
     'input_validator' => InputValidatorImp::class,

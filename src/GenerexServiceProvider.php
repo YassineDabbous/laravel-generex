@@ -6,10 +6,10 @@ use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\ServiceProvider;
 use YassineDabbous\Generex\Commands\PackGeneratorCommand;
 use YassineDabbous\Generex\Commands\GenerexCommand;
+use YassineDabbous\Generex\Concrete\CodeGeneratorFromBlade;
 use YassineDabbous\Generex\Protocols\CodeGenerator;
 use YassineDabbous\Generex\Protocols\DataHolder;
 use YassineDabbous\Generex\Protocols\InputValidator;
-use YassineDabbous\Generex\Concrete\CodeGeneratorImp;
 use YassineDabbous\Generex\Concrete\DataHolderImp;
 use YassineDabbous\Generex\Protocols\DataGenerator;
 use YassineDabbous\Generex\Protocols\TemplateProvider;
@@ -27,9 +27,9 @@ class GenerexServiceProvider extends ServiceProvider
                 GenerexCommand::class,
             ]);
 
-            $this->mergeConfigFrom(__DIR__.'/config.php', 'generex');
+            $this->mergeConfigFrom(__DIR__.'/../config/config.php', 'generex');
             $this->publishes([
-                __DIR__.'/config.php' => config_path('generex.php'),
+                __DIR__.'/../config/config.php' => config_path('generex.php'),
             ], 'generex-config');
 
             $this->loadViewsFrom(__DIR__.'/../resources/views', 'generex');
@@ -44,7 +44,7 @@ class GenerexServiceProvider extends ServiceProvider
             $this->app->singleton(TemplateProvider::class, config('generex.template_provider', TemplateProviderImp::class));
             $this->app->singleton(DataHolder::class, config('generex.data_holder', DataHolderImp::class));
             $this->app->singleton(InputValidator::class, config('generex.input_validator', InputValidatorImp::class));
-            $this->app->singleton(CodeGenerator::class, config('generex.code_generator', CodeGeneratorImp::class));
+            $this->app->singleton(CodeGenerator::class, config('generex.code_generator', CodeGeneratorFromBlade::class));
             $this->app->singleton(DataGenerator::class, config('generex.data_generator', DataGeneratorImp::class));
         }
 
