@@ -41,6 +41,8 @@ class GenerexServiceProvider extends ServiceProvider
                 return '<?php echo "<?php\n\n" ?>';
             });
 
+            $this->app->singleton(Generex::class, Generex::class);
+
             $this->app->singleton(TemplateProvider::class, config('generex.template_provider', TemplateProviderImp::class));
             $this->app->singleton(DataHolder::class, config('generex.data_holder', DataHolderImp::class));
             $this->app->singleton(InputValidator::class, config('generex.input_validator', InputValidatorImp::class));
