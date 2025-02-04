@@ -11,11 +11,11 @@ interface TemplateProvider
 
     public function getSignature(): string;
 
-    public function validateInput(Command $command);
+    public function validateInput(Command $command): bool;
 
-    public function preGenerating();
+    public function preGenerating(): bool;
 
-    public function generate();
+    public function generate(): bool;
 
-    public function postGenerating();
+    public function postGenerating(): bool;
 }

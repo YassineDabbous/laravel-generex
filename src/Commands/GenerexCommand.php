@@ -69,17 +69,24 @@ class GenerexCommand extends Command
         $this->info('Running Package Generator ...');
 
         // get cmd input
-        $templateProvider->validateInput($this);
-
+        if(!$templateProvider->validateInput($this)){
+            return false;
+        }
 
         // before generating files
-        $templateProvider->preGenerating();
+        if(!$templateProvider->preGenerating()){
+            return false;
+        }
 
         // generate files
-        $templateProvider->generate();
+        if(!$templateProvider->generate()){
+            return false;
+        }
         
         // after generating files
-        $templateProvider->postGenerating();
+        if(!$templateProvider->postGenerating()){
+            return false;
+        }
 
         return true;
     }

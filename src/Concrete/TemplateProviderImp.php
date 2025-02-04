@@ -106,8 +106,8 @@ class TemplateProviderImp implements TemplateProvider
         return $this->inputValidator->signature();
     }
     
-    public function validateInput(Command $command) {
-        $this->inputValidator->handle($command);
+    public function validateInput(Command $command): bool {
+        return $this->inputValidator->handle($command);
     }
     
 
@@ -137,7 +137,7 @@ class TemplateProviderImp implements TemplateProvider
     //
 
 
-    public function preGenerating() {
+    public function preGenerating(): bool {
         return $this->dataGenerator->handle();
     }
 
@@ -166,8 +166,8 @@ class TemplateProviderImp implements TemplateProvider
     //
     //
         
-    public function generate(){
-        $this->codeGenerator->handle($this->template->stubs);
+    public function generate(): bool{
+        return $this->codeGenerator->handle($this->template->stubs);
     }
     
     //
@@ -194,7 +194,7 @@ class TemplateProviderImp implements TemplateProvider
     //
     //
 
-    public function postGenerating() {
+    public function postGenerating(): bool {
         if($this->dataHolder->isSingleModule){
             info('In Single Module mode, files such as "ServiceProvider" won\'t be automatically recreated and may need to be updated manually.');
         }
@@ -207,6 +207,8 @@ class TemplateProviderImp implements TemplateProvider
         $this->addPathRepository($this->modulesFolder(), $this->dataHolder->vendorName, $this->dataHolder->packageName);
 
         $this->installPackage($this->dataHolder->vendorName, $this->dataHolder->packageName);
+        
+        return true;
     }
 
     protected function modulesFolder() : string {
