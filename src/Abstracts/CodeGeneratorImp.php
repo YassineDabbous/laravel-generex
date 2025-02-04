@@ -37,11 +37,10 @@ abstract class CodeGeneratorImp implements CodeGenerator
         foreach ($stubs as $stub) {
             $method = 'generate'.Str::studly($stub->sourceName);
             if(method_exists($this, $method)){
-                return $this->{$method}($stub);
+                $this->{$method}($stub);
+                continue;
             }
-            if(!$this->generate($stub)){
-                return false;
-            }
+            $this->generate($stub);
         }
         return true;
     }
