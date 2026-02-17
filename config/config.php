@@ -152,8 +152,8 @@ return [
             "YassineDabbous\\FileCast\\FileCast" => ['cover', 'photo', 'image', 'picture', 'icon'],
             "Ysn\\SuperCore\\Casts\\Spatial\\LocationCast" => fn(Field $f) => $f->dbType == 'point',
             'array' => fn(Field $f) => $f->dbType == 'json',
-            'bool' => fn(Field $f) => $f->dbType == 'boolean',
-            'date' => fn(Field $f) => in_array($f->dbType, ['date', 'datetime', 'timestamps']),
+            'boolean' => fn(Field $f) => $f->dbType == 'boolean',
+            'datetime' => fn(Field $f) => in_array($f->dbType, ['date', 'datetime', 'timestamps']),
         ],
 
         /** Default hidden columns */
