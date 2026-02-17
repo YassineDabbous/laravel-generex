@@ -5,7 +5,7 @@
         "{{ $o->vendorName }}",
         "{{ $o->packageName }}"
     ],
-    "homepage": "https://github.com/{{ $o->vendorName }}/{{ $o->packageName }}",
+    "homepage": "https://www.yaseen.dev/",
     "license": "MIT",
     "type": "library",
     "autoload": {

@@ -31,7 +31,7 @@ class GenerexCommand extends Command
         $templateProvider->prepare($this->option('template'));
         $this->signature  .= " {$templateProvider->getSignature()}";
 
-        $this->ignoreValidationErrors = false;
+        // $this->ignoreValidationErrors = false; private in L12
         $this->reparseSignature();
         $input->bind($this->getDefinition());
         $this->input->validate();

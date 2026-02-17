@@ -42,6 +42,15 @@ class DataHolderImp extends DataHolder
         return false;
     }
 
+    protected function useMultiTenancy() : bool {
+        foreach ($this->fields as $field) {
+            if ($field->name == 'tenant_id') {
+                return true;
+            }
+        }
+        return false;
+    }
+
     protected function fieldsWithDefaultValues() : Collection
     {
         return $this->fields->where(fn($c) => !is_null($c->defaultValue));
@@ -61,8 +70,7 @@ class DataHolderImp extends DataHolder
     {
         return $this->editableFields
                     ->where(fn($f) => !in_array($f->name, ['id', 'created_at', 'updated_at']))
-                    ->where(fn($f) => count($f->rules))
-                    ;
+                    ->where(fn($f) => count($f->rules));
     }
 
     protected function fieldsWithUpdateRules() : Collection
@@ -70,8 +78,7 @@ class DataHolderImp extends DataHolder
         return $this->editableFields
                     ->where(fn($f) => !in_array($f->name, ['id', 'created_at', 'updated_at']))
                     ->where(fn($f) => count($f->rules))
-                    ->where(fn($f) => !(count($f->rules)==1 && $f->rules[0]==='required'))
-                    ;
+                    ->where(fn($f) => !(count($f->rules)==1 && $f->rules[0]==='required'));
     }
 
     protected function visibleFields() : Collection
