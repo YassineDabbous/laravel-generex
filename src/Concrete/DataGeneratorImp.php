@@ -188,6 +188,9 @@ class DataGeneratorImp implements DataGenerator
                 case 'decimal':
                     $rules[] = 'numeric';
                     break;
+                case 'json':
+                    $rules[] = 'array';
+                    break;
                 case 'varchar':
                 case 'text':
                     if(!isset($rules['uuid'])){
